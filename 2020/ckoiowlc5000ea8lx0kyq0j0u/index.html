@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="blog of meurice" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="归一化和标准化都属于四种Feature scaling（特征缩放）方法：　　1.Rescaling(min-max normalization)  　　2.Mean normalization  　　3.Standardization(Z-score normalization)  　　4.Scaling to unit length   归一化(Normalization)归一化目标　　归一化将">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据预处理——归一化与标准化">
+<meta property="og:url" content="http://meurice.xyz/2020/ckoiowlc5000ea8lx0kyq0j0u/index.html">
+<meta property="og:site_name" content="blog of meurice">
+<meta property="og:description" content="归一化和标准化都属于四种Feature scaling（特征缩放）方法：　　1.Rescaling(min-max normalization)  　　2.Mean normalization  　　3.Standardization(Z-score normalization)  　　4.Scaling to unit length   归一化(Normalization)归一化目标　　归一化将">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wx1.sbimg.cn/2020/07/17/C8jCa.png">
+<meta property="og:image" content="https://wx2.sbimg.cn/2020/07/17/C8h9n.png">
+<meta property="og:image" content="https://wx1.sbimg.cn/2020/07/17/C8swh.png">
+<meta property="og:image" content="https://wx2.sbimg.cn/2020/07/17/C8JrM.png">
+<meta property="og:image" content="https://wx2.sbimg.cn/2020/07/17/C8wYT.jpg">
+<meta property="og:image" content="https://wx2.sbimg.cn/2020/07/17/C8vxJ.png">
+<meta property="og:image" content="https://wx1.sbimg.cn/2020/07/17/C8imm.png">
+<meta property="og:image" content="https://wx2.sbimg.cn/2020/07/17/C8FgD.png">
+<meta property="article:published_time" content="2020-07-17T09:33:10.000Z">
+<meta property="article:modified_time" content="2020-07-18T03:28:29.237Z">
+<meta property="article:author" content="meurice">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wx1.sbimg.cn/2020/07/17/C8jCa.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://meurice.xyz/2020/ckoiowlc5000ea8lx0kyq0j0u/"/>
+
+
+
+
+
+  <title>数据预处理——归一化与标准化 | blog of meurice</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blog of meurice</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://meurice.xyz/2020/ckoiowlc5000ea8lx0kyq0j0u/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="meurice">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blog of meurice">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据预处理——归一化与标准化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-17T17:33:10+08:00">
+                2020-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>归一化和标准化都属于四种Feature scaling（特征缩放）方法：<br>　　1.Rescaling(min-max normalization)<br>  <img src="https://wx1.sbimg.cn/2020/07/17/C8jCa.png" alt="Rescaling"><br>　　2.Mean normalization<br>  <img src="https://wx2.sbimg.cn/2020/07/17/C8h9n.png" alt="Mean normalization"><br>　　3.Standardization(Z-score normalization)<br>  <img src="https://wx1.sbimg.cn/2020/07/17/C8swh.png" alt="Standardization"><br>　　4.Scaling to unit length<br>  <img src="https://wx2.sbimg.cn/2020/07/17/C8JrM.png" alt="Scaling to unit length"></p>
+<h2 id="归一化-Normalization"><a href="#归一化-Normalization" class="headerlink" title="归一化(Normalization)"></a>归一化(Normalization)</h2><h3 id="归一化目标"><a href="#归一化目标" class="headerlink" title="归一化目标"></a>归一化目标</h3><p>　　归一化将一列数据变化到某个固定区间（范围）中，这一区间通常是[0,1]，广义的讲，可以是各种区间，例如图像中可能会映射到[0,255]。<br>　　归一化使得各个特征维度对目标函数的影响权重是一致的，将有量纲的表达式，经过变换，化为无量纲的表达式，成为纯量，同时使得扁平分布的数据伸缩变换成类圆形。<br>　　概率模型不需要归一化，因为它们不关心变量的值，而是关心变量的分布和变量之间的条件概率，如决策树、rf。而像Adaboost、、xgboost、SVM、LR、KNN、KMeans之类的最优化问题就需要归一化。</p>
+<h3 id="归一化带来的好处"><a href="#归一化带来的好处" class="headerlink" title="归一化带来的好处"></a>归一化带来的好处</h3><p>　　Feature Sacling(Normalization)对基于Gradient descent算法友好，可让算法最终收敛并且提高训练速度和精度。<br>  <img src="https://wx2.sbimg.cn/2020/07/17/C8wYT.jpg" alt="scaling"></p>
+<p>　　对于使用梯度下降算法来更新权重的训练过程，每一次更新的delta，除了与学习率有关，还与样本值本身也有关系。<br>  <img src="https://wx2.sbimg.cn/2020/07/17/C8vxJ.png" alt="gd"><br>　　Xj(i)就是当前更新批次对应的样本值，因此值越大的样本单次更新权重更快，这就有可能带来收敛速度不一样甚至不收敛等问题。</p>
+<h3 id="归一化算法："><a href="#归一化算法：" class="headerlink" title="归一化算法："></a>归一化算法：</h3><p>　　1.线性转换：x’ = (x - min(x)) / (max(x) - min(x))<br>　　2.对数函数转换：x’ = lg(x) / lg(max)，其中max表示样本数据的最大值，所有样本数据均要大于等于1。<br>　　3.arctan反正切函数转换：x’ = arctan(x) * (2 / pi)，应注意的是，若希望映射的区间为[0,1]，则数据都应该大于等于0，小于0的数据将被映射到[-1,0]区间上。<br>　　4.L2范数归一化：对向量X的每个维度数据x1, x2, …, xn都除以||x||2得到一个新向量，即<br>  <img src="https://wx1.sbimg.cn/2020/07/17/C8imm.png" alt="l2"><br>　　经过L2范数归一化后，一组向量的欧式距离和它们的余弦相似度可以等价，严格数学证明可以参考<a href="https://www.cnblogs.com/Kalafinaian/p/11180519.html" target="_blank" rel="noopener">这篇文章</a>。</p>
+<h2 id="标准化-Standardization"><a href="#标准化-Standardization" class="headerlink" title="标准化(Standardization)"></a>标准化(Standardization)</h2><h3 id="标准化目标"><a href="#标准化目标" class="headerlink" title="标准化目标"></a>标准化目标</h3><p>　　将数据变换为均值为0，标准差为1的分布（<strong>不一定是正态分布</strong>）。<br>　　<img src="https://wx2.sbimg.cn/2020/07/17/C8FgD.png" alt="st"></p>
+<h2 id="联系与差异"><a href="#联系与差异" class="headerlink" title="联系与差异"></a>联系与差异</h2><h3 id="联系"><a href="#联系" class="headerlink" title="联系"></a>联系</h3><p>　　· Normalization和Standardization都是使数值都落入到统一的数值范围，消除了数据量纲的影响。  </p>
+<h3 id="差异"><a href="#差异" class="headerlink" title="差异"></a>差异</h3><p>　　此处参考文章<a href="https://blog.csdn.net/weixin_36604953/article/details/102652160" target="_blank" rel="noopener">标准化和归一化，请勿混为一谈，透彻理解数据变换</a>。<br>　　· Normalization把数据限定在需要的范围，一般为[0,1]区间；Standardization将数据变换为μ=0，σ=1的分布，但没有严格规定区间。<br>　　· Normalization对数据的缩放比例仅仅和极值有关；但对于Standardization而言，若将除极大值和极小值外的数据更换，则均值和标准差也可能会因此改变，缩放比例也随之改变。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/ckoiowlbx0007a8lx76bo23e4/" rel="next" title="Linux设置定时任务">
+                <i class="fa fa-chevron-left"></i> Linux设置定时任务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/ckoiowlc7000fa8lxe919f71a/" rel="prev" title="特征工程">
+                特征工程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">meurice</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#归一化-Normalization"><span class="nav-number">1.</span> <span class="nav-text">归一化(Normalization)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#归一化目标"><span class="nav-number">1.1.</span> <span class="nav-text">归一化目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归一化带来的好处"><span class="nav-number">1.2.</span> <span class="nav-text">归一化带来的好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归一化算法："><span class="nav-number">1.3.</span> <span class="nav-text">归一化算法：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准化-Standardization"><span class="nav-number">2.</span> <span class="nav-text">标准化(Standardization)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标准化目标"><span class="nav-number">2.1.</span> <span class="nav-text">标准化目标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#联系与差异"><span class="nav-number">3.</span> <span class="nav-text">联系与差异</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#联系"><span class="nav-number">3.1.</span> <span class="nav-text">联系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#差异"><span class="nav-number">3.2.</span> <span class="nav-text">差异</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">meurice</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>

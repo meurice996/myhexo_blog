@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="blog of meurice" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Introduction　　Meta Learning &#x3D; Learn to learn　　Meta：How to learn a new model Meta Learning　　Meta Learning即“学会学习”，学习了一些task后，机器学会如何去学习新的task，例如机器学习了task1——语音辨识，task2——图像辨识，…，然后给一个新的task（例如文本分类），面对这个新的ta">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[学习笔记]Meta Learning(元学习)">
+<meta property="og:url" content="http://meurice.xyz/2021/ckoiowlc1000aa8lx093kahc1/index.html">
+<meta property="og:site_name" content="blog of meurice">
+<meta property="og:description" content="Introduction　　Meta Learning &#x3D; Learn to learn　　Meta：How to learn a new model Meta Learning　　Meta Learning即“学会学习”，学习了一些task后，机器学会如何去学习新的task，例如机器学习了task1——语音辨识，task2——图像辨识，…，然后给一个新的task（例如文本分类），面对这个新的ta">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/0.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/1.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/2.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/3.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/4.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/5.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/6.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/7.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/10.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/8.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/9.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/11.png">
+<meta property="og:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/12.png">
+<meta property="article:published_time" content="2021-01-07T12:51:38.000Z">
+<meta property="article:modified_time" content="2021-01-08T15:52:06.110Z">
+<meta property="article:author" content="meurice">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://meurice.xyz/2021/ckoiowlc1000aa8lx093kahc1/"/>
+
+
+
+
+
+  <title>[学习笔记]Meta Learning(元学习) | blog of meurice</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blog of meurice</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://meurice.xyz/2021/ckoiowlc1000aa8lx093kahc1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="meurice">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blog of meurice">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[学习笔记]Meta Learning(元学习)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-01-07T20:51:38+08:00">
+                2021-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>　　Meta Learning = Learn to learn<br>　　Meta：How to learn a new model</p>
+<h2 id="Meta-Learning"><a href="#Meta-Learning" class="headerlink" title="Meta Learning"></a>Meta Learning</h2><p>　　Meta Learning即“学会学习”，学习了一些task后，机器学会如何去学习新的task，例如机器学习了task1——语音辨识，task2——图像辨识，…，然后给一个新的task（例如文本分类），面对这个新的task，机器能够快速的学习。<br><img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/0.png" alt><br>　　其步骤和Machine Learning类似，其中不同的是Maching Learning需要找到一个Function <strong>f</strong>，而Meta Learning需要找到的是一个Learning algorithm <strong>F</strong>：<br>　　step1. define a set of learning algorithm<br>　　step2. goodness of learning algorithm<br>　　step3. pick the best learnDing algorithm<br><img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/1.png" alt></p>
+<h3 id="step1-Define-a-set-of-learning-algorithm"><a href="#step1-Define-a-set-of-learning-algorithm" class="headerlink" title="step1. Define a set of learning algorithm"></a>step1. Define a set of learning algorithm</h3><p>　　首先准备训练资料，其为一堆训练数据D和一堆f的集合，对于每一个task来说，整个流程构成的不再是像Machine Learning中的参数θ，而是构成了一个f，即每当使用新的参数进行初始化时，我们定义了一个新的f。<br><img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/2.png" alt></p>
+<h3 id="step2-Define-the-goodness-of-a-Function-F"><a href="#step2-Define-the-goodness-of-a-Function-F" class="headerlink" title="step2. Define the goodness of a Function F"></a>step2. Define the goodness of a Function F</h3><p>　　对于每一个task，都能得到f，并且有损失l。<br><img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/3.png" alt><br>　　N：N tasks<br>　　l^n：Testing loss for task n after training<br><img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/4.png" alt></p>
+<h2 id="Omniglot——Few-shot-Classification"><a href="#Omniglot——Few-shot-Classification" class="headerlink" title="Omniglot——Few-shot Classification"></a>Omniglot——Few-shot Classification</h2><p>　　Omniglot 数据集总共包含 5050 个字母。我们通常将这些分成一组包含 3030 个字母的背景（background）集和一组包含 2020 个字母的评估（evaluation）集。  </p>
+<h3 id="N-ways-K-shot"><a href="#N-ways-K-shot" class="headerlink" title="N-ways K-shot"></a>N-ways K-shot</h3><p>　　N-ways K-shot： In each training and test tasks, there are N classes, each has K examples.<br>  <img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/5.png" alt="example"></p>
+<h2 id="MAML"><a href="#MAML" class="headerlink" title="MAML"></a>MAML</h2><p>　　MAML的基本思想是：对于每一个task中学到的f，其仅决定参数的赋值方式，而不决定模型架构等内容，网络结构是提前固定的。  </p>
+<h3 id="Loss-Function"><a href="#Loss-Function" class="headerlink" title="Loss Function"></a>Loss Function</h3><p>  <img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/6.png" alt>  </p>
+<p>　　最小化L(Φ)：<strong>Gradient Descent</strong><br>  <img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/7.png" alt></p>
+<h3 id="MAML对比Model-Pre-training"><a href="#MAML对比Model-Pre-training" class="headerlink" title="MAML对比Model Pre-training"></a>MAML对比Model Pre-training</h3><p>　　MAML不在意Φ在train task上的表现如何，而是在意用Φ训练出的参数θ hat ^ n表现如何。<br>　　而Model Pre-training希望找到在task1和task2上损失都最小的Φ。<br>  <img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/10.png" alt><br>　　如下图，可能Φ在task1和task2上表现都不太好，但假设拿这个Φ做初始参数，对于task1和task2来说，都能比较容易的找到最佳参数。<br>  <img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/8.png" alt><br>　　而对于Model Pre-training来说，希望找到的是如下图所示的这个Φ，但不保证拿这个Φ去训练后能得到好的θ hat ^ n。<br>  <img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/9.png" alt><br>　　MAML中参数仅被update一次后就被当作最终的参数。其一原因是需要获得的结果参数量过大，多次更新带来的时间成本大大增加。另一原因是MAML的训练目标是训练后得到非常好的Init，希望更新一次后就能得到非常好的效果，一般训练时只更新一次参数，但测试的时候更新多次。<br>  <img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/11.png" alt><br>  <img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/12.png" alt></p>
+<h2 id="Reptile"><a href="#Reptile" class="headerlink" title="Reptile"></a>Reptile</h2><h2 id="Gradient-Descent-as-LSTM"><a href="#Gradient-Descent-as-LSTM" class="headerlink" title="Gradient Descent as LSTM"></a>Gradient Descent as LSTM</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/ckoiowlbw0005a8lxf6q1ajxf/" rel="next" title="中移集成（雄安产业研究院）首届OneCity编程大赛">
+                <i class="fa fa-chevron-left"></i> 中移集成（雄安产业研究院）首届OneCity编程大赛
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/ckoiowlc4000ca8lx1hnhd0dw/" rel="prev" title="[赛后总结]山东省第二届数据应用创新创业大赛-主赛场——疫情密切接触人员追踪">
+                [赛后总结]山东省第二届数据应用创新创业大赛-主赛场——疫情密切接触人员追踪 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">meurice</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Meta-Learning"><span class="nav-number">2.</span> <span class="nav-text">Meta Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#step1-Define-a-set-of-learning-algorithm"><span class="nav-number">2.1.</span> <span class="nav-text">step1. Define a set of learning algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#step2-Define-the-goodness-of-a-Function-F"><span class="nav-number">2.2.</span> <span class="nav-text">step2. Define the goodness of a Function F</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Omniglot——Few-shot-Classification"><span class="nav-number">3.</span> <span class="nav-text">Omniglot——Few-shot Classification</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#N-ways-K-shot"><span class="nav-number">3.1.</span> <span class="nav-text">N-ways K-shot</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAML"><span class="nav-number">4.</span> <span class="nav-text">MAML</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Loss-Function"><span class="nav-number">4.1.</span> <span class="nav-text">Loss Function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MAML对比Model-Pre-training"><span class="nav-number">4.2.</span> <span class="nav-text">MAML对比Model Pre-training</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reptile"><span class="nav-number">5.</span> <span class="nav-text">Reptile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradient-Descent-as-LSTM"><span class="nav-number">6.</span> <span class="nav-text">Gradient Descent as LSTM</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">meurice</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
