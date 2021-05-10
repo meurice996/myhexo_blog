@@ -5,8 +5,6 @@
   <!-- SEO相关 -->
   
     
-      <meta name="robots" content="noindex,follow">
-    
   
   <!-- 渲染优化 -->
   <meta http-equiv='x-dns-prefetch-control' content='on' />
@@ -24,7 +22,7 @@
 
   <!-- 页面元数据 -->
   
-  <title>Archive: 2020/10 - blog of meurice</title>
+  <title>数据预处理——归一化与标准化 - blog of meurice</title>
   
 
   
@@ -106,7 +104,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <body>
     
 
-<header id="l_header" class="l_header auto shadow blur " style='opacity: 0' >
+<header id="l_header" class="l_header auto shadow blur show" style='opacity: 0' >
   <div class='container'>
   <div id='wrapper'>
     <div class='nav-sub'>
@@ -357,7 +355,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <div id="l_cover">
   
     
-        <div id="half" class='cover-wrapper  search' style="display: ;">
+        <div id="full" class='cover-wrapper post search' style="display: none;">
           
             <div class='cover-bg lazyload placeholder' data-bg="/img/top_img.jpg"></div>
           
@@ -441,118 +439,221 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
           
 
 <div class='l_main'>
-	
-		
-  <section class="post-list">
+  <article class="article post white-box reveal md shadow article-type-post" id="post" itemscope itemprop="blogPost">
+  
+
+
+  
+  <div class="article-meta" id="top">
     
-      
+    
+    
+      <h1 class="title">
+        数据预处理——归一化与标准化
+      </h1>
+      <div class='new-meta-box'>
         
+          
+            
+<div class='new-meta-item author'>
+  <a class='author' href="/" rel="nofollow">
+    <img no-lazy src="">
+    <p>请设置文章作者</p>
+  </a>
+</div>
+
           
         
           
+            
+
+          
         
-      
-    
-    
-      
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：Jul 17, 2020</p>
+  </a>
+</div>
+
+          
         
-          <div class='post-wrapper'>
-            <div class="post post-v3 white-box reveal shadow">
-  
-  
-  
-  
-    
-    <h2 class="article-title" >
-      <a href="/2020/ckoisz8ea000huklx46mjglge/">
-        第三届全国高校绿色计算大赛半决赛——OpenEuler（第一阶段）
-      </a>
-    </h2>
-  
-  <div class='md'>
-    
+          
+            
+  <div class="new-meta-item browse leancloud">
+    <a class='notlink'>
       
-        OpenEuler 、 Shell 编程1.正则替换系统提供了一个待处理的test.txt文件，其内容为：
-1234ZhangSan25manLiSi7manWangWu16womanAlex77man
-请在右侧的编码区域，通过shell脚本将文件内容中的三列用 ,(英文逗号) 分割开来。其中，第一列为人名，由字母组成；第二列为年龄，由数字组成；第三列为性别，只会是 man 或者 woman...
-      
-    
+      <div id="lc-pv" data-title="数据预处理——归一化与标准化" data-path="/2020/ckoisz8e8000euklxff63adgf/">
+        <i class="fas fa-eye fa-fw" aria-hidden="true"></i>
+        <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span>
+        次浏览
+      </div>
+    </a>
   </div>
-  
-    <div class='meta-v3' line_style='solid'>
-      <div>
-        
-        <time>2020-10-24</time>
+
+
+          
         
       </div>
+    
+  </div>
+
+
+  
+  
+  <p>归一化和标准化都属于四种Feature scaling（特征缩放）方法：<br>　　1.Rescaling(min-max normalization)<br>  <img src="https://wx1.sbimg.cn/2020/07/17/C8jCa.png" class="lazyload" data-srcset="https://wx1.sbimg.cn/2020/07/17/C8jCa.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="Rescaling"><br>　　2.Mean normalization<br>  <img src="https://wx2.sbimg.cn/2020/07/17/C8h9n.png" class="lazyload" data-srcset="https://wx2.sbimg.cn/2020/07/17/C8h9n.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="Mean normalization"><br>　　3.Standardization(Z-score normalization)<br>  <img src="https://wx1.sbimg.cn/2020/07/17/C8swh.png" class="lazyload" data-srcset="https://wx1.sbimg.cn/2020/07/17/C8swh.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="Standardization"><br>　　4.Scaling to unit length<br>  <img src="https://wx2.sbimg.cn/2020/07/17/C8JrM.png" class="lazyload" data-srcset="https://wx2.sbimg.cn/2020/07/17/C8JrM.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="Scaling to unit length"></p>
+<h2 id="归一化-Normalization"><a href="#归一化-Normalization" class="headerlink" title="归一化(Normalization)"></a>归一化(Normalization)</h2><h3 id="归一化目标"><a href="#归一化目标" class="headerlink" title="归一化目标"></a>归一化目标</h3><p>　　归一化将一列数据变化到某个固定区间（范围）中，这一区间通常是[0,1]，广义的讲，可以是各种区间，例如图像中可能会映射到[0,255]。<br>　　归一化使得各个特征维度对目标函数的影响权重是一致的，将有量纲的表达式，经过变换，化为无量纲的表达式，成为纯量，同时使得扁平分布的数据伸缩变换成类圆形。<br>　　概率模型不需要归一化，因为它们不关心变量的值，而是关心变量的分布和变量之间的条件概率，如决策树、rf。而像Adaboost、、xgboost、SVM、LR、KNN、KMeans之类的最优化问题就需要归一化。</p>
+<h3 id="归一化带来的好处"><a href="#归一化带来的好处" class="headerlink" title="归一化带来的好处"></a>归一化带来的好处</h3><p>　　Feature Sacling(Normalization)对基于Gradient descent算法友好，可让算法最终收敛并且提高训练速度和精度。<br>  <img src="https://wx2.sbimg.cn/2020/07/17/C8wYT.jpg" class="lazyload" data-srcset="https://wx2.sbimg.cn/2020/07/17/C8wYT.jpg" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="scaling"></p>
+<p>　　对于使用梯度下降算法来更新权重的训练过程，每一次更新的delta，除了与学习率有关，还与样本值本身也有关系。<br>  <img src="https://wx2.sbimg.cn/2020/07/17/C8vxJ.png" class="lazyload" data-srcset="https://wx2.sbimg.cn/2020/07/17/C8vxJ.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="gd"><br>　　Xj(i)就是当前更新批次对应的样本值，因此值越大的样本单次更新权重更快，这就有可能带来收敛速度不一样甚至不收敛等问题。</p>
+<h3 id="归一化算法："><a href="#归一化算法：" class="headerlink" title="归一化算法："></a>归一化算法：</h3><p>　　1.线性转换：x’ = (x - min(x)) / (max(x) - min(x))<br>　　2.对数函数转换：x’ = lg(x) / lg(max)，其中max表示样本数据的最大值，所有样本数据均要大于等于1。<br>　　3.arctan反正切函数转换：x’ = arctan(x) * (2 / pi)，应注意的是，若希望映射的区间为[0,1]，则数据都应该大于等于0，小于0的数据将被映射到[-1,0]区间上。<br>　　4.L2范数归一化：对向量X的每个维度数据x1, x2, …, xn都除以||x||2得到一个新向量，即<br>  <img src="https://wx1.sbimg.cn/2020/07/17/C8imm.png" class="lazyload" data-srcset="https://wx1.sbimg.cn/2020/07/17/C8imm.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="l2"><br>　　经过L2范数归一化后，一组向量的欧式距离和它们的余弦相似度可以等价，严格数学证明可以参考<a href="https://www.cnblogs.com/Kalafinaian/p/11180519.html" target="_blank" rel="noopener">这篇文章</a>。</p>
+<h2 id="标准化-Standardization"><a href="#标准化-Standardization" class="headerlink" title="标准化(Standardization)"></a>标准化(Standardization)</h2><h3 id="标准化目标"><a href="#标准化目标" class="headerlink" title="标准化目标"></a>标准化目标</h3><p>　　将数据变换为均值为0，标准差为1的分布（<strong>不一定是正态分布</strong>）。<br>　　<img src="https://wx2.sbimg.cn/2020/07/17/C8FgD.png" class="lazyload" data-srcset="https://wx2.sbimg.cn/2020/07/17/C8FgD.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="st"></p>
+<h2 id="联系与差异"><a href="#联系与差异" class="headerlink" title="联系与差异"></a>联系与差异</h2><h3 id="联系"><a href="#联系" class="headerlink" title="联系"></a>联系</h3><p>　　· Normalization和Standardization都是使数值都落入到统一的数值范围，消除了数据量纲的影响。  </p>
+<h3 id="差异"><a href="#差异" class="headerlink" title="差异"></a>差异</h3><p>　　此处参考文章<a href="https://blog.csdn.net/weixin_36604953/article/details/102652160" target="_blank" rel="noopener">标准化和归一化，请勿混为一谈，透彻理解数据变换</a>。<br>　　· Normalization把数据限定在需要的范围，一般为[0,1]区间；Standardization将数据变换为μ=0，σ=1的分布，但没有严格规定区间。<br>　　· Normalization对数据的缩放比例仅仅和极值有关；但对于Standardization而言，若将除极大值和极小值外的数据更换，则均值和标准差也可能会因此改变，缩放比例也随之改变。</p>
+
+  
+  
+    
+    <div class='footer'>
       
-        <div>
-          <a class='readmore' href='/2020/ckoisz8ea000huklx46mjglge/'>
-            Read More
-          </a>
+      
+      
+        <div class='copyright'>
+          <blockquote>
+            
+              
+                <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+              
+            
+              
+                <p>本文永久链接是：<a href=http://meurice.xyz/2020/ckoisz8e8000euklxff63adgf/>http://meurice.xyz/2020/ckoisz8e8000euklxff63adgf/</a></p>
+              
+            
+          </blockquote>
         </div>
+      
       
     </div>
   
+  
+    
 
+
+  <div class='article-meta' id="bottom">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-07-18T11:28:29+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：Jul 18, 2020</p>
+  </a>
 </div>
 
-          </div>
         
       
         
-          <div class='post-wrapper'>
-            <div class="post post-v3 white-box reveal shadow">
-  
-  
-  
-  
-    
-    <h2 class="article-title" >
-      <a href="/2020/ckoisz8e9000guklx0kvtdrt7/">
-        [学习日志]智算之道——人工智能应用挑战赛
-      </a>
-    </h2>
-  
-  <div class='md'>
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
     
       
-        空值填充　　以众数填充为例。
-123for column in list(all_data.columns[all_data.isnull().sum() &gt; 0]):  mode_val = all_data[column].mode()[0]  all_data[column].fillna(mode_val, inplace=True)
-　　注意可能有多个众数，一般取第一个（mo...
+        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://meurice.xyz/2020/ckoisz8e8000euklxff63adgf/&title=数据预处理——归一化与标准化 - blog of meurice&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qq.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qq.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://meurice.xyz/2020/ckoisz8e8000euklxff63adgf/&title=数据预处理——归一化与标准化 - blog of meurice&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qzone.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qzone.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://meurice.xyz/2020/ckoisz8e8000euklxff63adgf/&title=数据预处理——归一化与标准化 - blog of meurice&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/weibo.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/weibo.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+    
       
     
   </div>
-  
-    <div class='meta-v3' line_style='solid'>
-      <div>
+</div>
+
+
+
         
-        <time>2020-10-10</time>
-        
-      </div>
       
-        <div>
-          <a class='readmore' href='/2020/ckoisz8e9000guklx0kvtdrt7/'>
-            Read More
-          </a>
-        </div>
+    </div>
+  </div>
+
+
+  
+  
+
+  
+    <div class="prev-next">
+      
+        <a class='prev' href='/2020/ckoisz8e8000fuklx8qdbd28a/'>
+          <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>特征工程</p>
+          <p class='content'>前言　　　　数据和特征决定了机器学习的上限，而模型和算法只是逼近这个上限而已。
+特征工程　　特征工程是对原始数据进行一系列工程处理，将其提炼为特征，作为输入供算法和模型使用，简单来说，就是通过X...</p>
+        </a>
+      
+      
+        <a class='next' href='/2020/ckoisz8dx0007uklx4o6repyj/'>
+          <p class='title'>Linux设置定时任务<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+          <p class='content'>环境：CentOS 8
+执行内容　　新建文件_crond.sh，作为定时执行的内容。  12345#!&#x2F;bin&#x2F;bashcd &#x2F;www&#x2F;blog&#x2F...</p>
+        </a>
       
     </div>
   
+</article>
 
+
+  
+
+  <article class="post white-box reveal shadow" id="comments">
+    <p ct><i class='fas fa-comments'></i> 评论</p>
+    
+    <div id="valine_container" class="valine_thread">
+  <i class="fas fa-cog fa-spin fa-fw fa-2x"></i>
 </div>
 
-          </div>
-        
-      
-    
-  </section>
-  
-    
-  
+  </article>
 
 
-	
+
+
+
+
 </div>
 <aside class='l_side'>
   
@@ -560,87 +661,28 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     
     
 
-<section class="widget blogger shadow desktop mobile">
-  <div class='content'>
-    
-      
-        <a class='avatar flat-box rectangle' href='/about/'>
-          <img no-lazy src='/img/avatar.png'/>
-        </a>
-      
-    
-    
-      <div class='text'>
-        
-        
-        
-          <p><span id="jinrishici-sentence">blog of meurice</span></p>
-          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        
-      </div>
-    
-    
-      <div class="social-wrapper">
-        
-          
-            <a href="/atom.xml"
-              class="social fas fa-rss flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="mailto:me@xxx.com"
-              class="social fas fa-envelope flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="https://github.com/volantis-x/"
-              class="social fab fa-github flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="/"
-              class="social fas fa-headphones-alt flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-      </div>
-    
-  </div>
-</section>
 
-  
 
-  
+  <section class="widget toc-wrapper shadow desktop mobile" id="toc-div" >
     
+  <header>
     
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
 
-  
 
-  
-    
-    
+    <div class='content'>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#归一化-Normalization"><span class="toc-text">归一化(Normalization)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#归一化目标"><span class="toc-text">归一化目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#归一化带来的好处"><span class="toc-text">归一化带来的好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#归一化算法："><span class="toc-text">归一化算法：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#标准化-Standardization"><span class="toc-text">标准化(Standardization)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#标准化目标"><span class="toc-text">标准化目标</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#联系与差异"><span class="toc-text">联系与差异</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联系"><span class="toc-text">联系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#差异"><span class="toc-text">差异</span></a></li></ol></li></ol>
+    </div>
+  </section>
 
-  
 
   
 
 
 </aside>
+
 
 
 		  
@@ -649,21 +691,21 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 <script>
   window.pdata={}
-  pdata.ispage=false;
-  pdata.postTitle="";
+  pdata.ispage=true;
+  pdata.postTitle="数据预处理——归一化与标准化";
   pdata.commentPath="";
   pdata.commentPlaceholder="";
   // header 这里无论是否开启pjax都需要
   var l_header=document.getElementById("l_header");
   
-  l_header.classList.remove("show");
+  l_header.classList.add("show");
   
   
     // cover
     var cover_wrapper=document.querySelector('.cover-wrapper');
     
-    cover_wrapper.id="half";
-    cover_wrapper.style.display="";
+    cover_wrapper.id="none";
+    cover_wrapper.style.display="none";
     
   
 </script>
