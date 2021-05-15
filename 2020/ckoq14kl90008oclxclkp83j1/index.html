@@ -18,9 +18,25 @@
   <meta name="author" content="meurice">
   <meta name="keywords" content="">
   
-  <title>Archives - meurice&#39;s Notes</title>
+  <title>Linux设置定时任务 - meurice&#39;s Notes</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.6.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
 
 
 
@@ -49,7 +65,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 80vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -143,18 +159,64 @@
 </nav>
 
     <div class="banner" id="banner" parallax=true
-         style="background: url('/img/default.png') no-repeat center center;
+         style="background: url('/img/index_img.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Archive">
+            <span class="h2" id="subtitle" title="Linux设置定时任务">
               
             </span>
 
             
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      meurice
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-07-16 19:40" pubdate>
+        July 16, 2020 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      215 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      2
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
           </div>
 
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
           
         </div>
       </div>
@@ -163,64 +225,96 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux设置定时任务</h1>
+            
+            <div class="markdown-body">
+              <p>环境：CentOS 8</p>
+<h3 id="执行内容"><a href="#执行内容" class="headerlink" title="执行内容"></a>执行内容</h3><p>　　新建文件_crond.sh，作为定时执行的内容。<br>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">cd</span> /www/blog/hexo<br>git pull git@github.com:egname/egrepo.git<br><br><span class="hljs-comment">#echo pull successfully &gt; /home/gitpull.log</span><br></code></pre></td></tr></table></figure></p>
+<h3 id="crontab服务"><a href="#crontab服务" class="headerlink" title="crontab服务"></a>crontab服务</h3><p>　　启动crontab服务，CentOS版本不同，具体命令可能有所差异。<br>  <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">systemctl <span class="hljs-literal">start</span> crond<br></code></pre></td></tr></table></figure><br>　　启动服务</p>
+  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql">systemctl <span class="hljs-keyword">stop</span> crond            <span class="hljs-comment"># 关闭服务</span><br>systemctl restart crond         <span class="hljs-comment"># 重启服务     </span><br>systemctl reload crond          <span class="hljs-comment"># 重新载入配置</span><br>systemctl <span class="hljs-keyword">status</span> crond          <span class="hljs-comment"># 状态</span><br></code></pre></td></tr></table></figure>
+<h3 id="设置计时器"><a href="#设置计时器" class="headerlink" title="设置计时器"></a>设置计时器</h3><p>　　crontab 选项 参数<br>　　选项:<br>　　　　-e：编辑该用户的计时器设置；<br>　　　　-l：列出该用户的计时器设置；<br>　　　　-r：删除该用户的计时器设置；<br>　　　　-u：指定要设定计时器的用户名称。<br>  <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">crontab -e</span><br></code></pre></td></tr></table></figure></p>
+<p> 　　进入insert插入模式，以每五分钟执行一次为例。ESC后输入wq保存并退出。<br>  <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-emphasis">*/5 *</span> <span class="hljs-emphasis">* *</span> * /root/_crond.sh<br></code></pre></td></tr></table></figure><br>  <br></p>
+<p>  关于Crontab更多具体用法，您可以参考<a href="https://www.cnblogs.com/muscles/p/9532451.html" target="_blank" rel="noopener">这篇文章</a>。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/ckoq14klg000eoclxglre2u2u/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据预处理——归一化与标准化</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/ckoq14klf000doclx76d9254n/">
+                        <span class="hidden-mobile">[学习日志]2020 DIGIX全球校园AI算法精英大赛——赛道A</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
                 
 
-<div class="list-group">
-  <p class="h4">14 posts in total.</p>
-  <hr>
-  
-  
-    
-      
-      <p class="h5">2020</p>
-    
-    <a href="/2020/ckoq14kl90008oclxclkp83j1/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Linux设置定时任务</span>
-      <time style="float: right;">07-16</time>
-    </a>
-  
-    
-    <a href="/2020/ckoq14klf000doclx76d9254n/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">[学习日志]2020 DIGIX全球校园AI算法精英大赛——赛道A</span>
-      <time style="float: right;">07-16</time>
-    </a>
-  
-    
-    <a href="/2020/ckoq14kl80006oclxceckare3/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Hexo+Nginx搭建静态页面博客</span>
-      <time style="float: right;">07-15</time>
-    </a>
-  
-    
-    <a href="/2020/ckoq14kl90007oclxdz6o499o/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Hello World</span>
-      <time style="float: right;">07-15</time>
-    </a>
-  
-</div>
-
-
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-    </span>
-  </nav>
-
-
-
-
-              </div>
-            </div>
-          </div>
+              </article>
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
 
     
@@ -300,9 +394,15 @@
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.2/dist/tocbot.min.js" ></script>
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
 
 
 
