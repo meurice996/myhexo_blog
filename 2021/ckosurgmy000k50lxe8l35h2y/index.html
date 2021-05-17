@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      194
+      195
        分钟
     </span>
   
@@ -240,17 +240,10 @@
             <div class="markdown-body">
               <h2 id="赛题任务"><a href="#赛题任务" class="headerlink" title="赛题任务"></a>赛题任务</h2><p>　　<strong>题目1：</strong><br>　　分析小米公司手机业务目前所处的宏观经营环境以及产业环境。<br>　　<strong>题目2：</strong><br>　　为小米公司制定未来三年手机业务发展策略，帮助小米公司：<br>　　　－　维持在低端手机市场的占有率<br>　　　－　突破高端市场，实现更高的高端手机出货量</p>
 <h2 id="pyecharts自适应显示"><a href="#pyecharts自适应显示" class="headerlink" title="pyecharts自适应显示"></a>pyecharts自适应显示</h2><p>　　 <strong>-</strong> 1. 获取浏览器窗口长宽<br>　　 <strong>-</strong> 2. 设置显示区域长款百分比<br>　　 <strong>-</strong> 3. 设置居中参数<br>　　 <strong>-</strong> 4. 设置自适应（根据显示区域调整刷新）  </p>
-<p>　　<strong>step1.</strong> 修改.\Lib\site-packages\pyecharts\render\templates\ <strong>macro</strong>  </p>
-<figure class="highlight twig"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs twig"><span class="hljs-template-tag">&#123;%- <span class="hljs-name"><span class="hljs-keyword">macro</span></span> render_chart_content(c) -%&#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"chart-container"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"width:95%; height:95%; margin:auto; top:30px"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span></span><br><span class="xml">        var chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml"> = echarts.init(</span><br><span class="xml">            document.getElementById('</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">'), '</span><span class="hljs-template-variable">&#123;&#123; c.theme &#125;&#125;</span><span class="xml">', &#123;renderer: '</span><span class="hljs-template-variable">&#123;&#123; c.renderer &#125;&#125;</span><span class="xml">'&#125;);</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">for</span></span> js in c.js_functions.items %&#125;</span><br><span class="xml">            </span><span class="hljs-template-variable">&#123;&#123; js &#125;&#125;</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endfor</span></span> %&#125;</span><br><span class="xml">        var option_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml"> = </span><span class="hljs-template-variable">&#123;&#123; c.json_contents &#125;&#125;</span><span class="xml">;</span><br><span class="xml">        chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">.setOption(option_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">);</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">if</span></span> c._is_geo_chart %&#125;</span><br><span class="xml">            var bmap = chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">.getModel().getComponent('bmap').getBMap();</span><br><span class="xml">            </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">if</span></span> c.bmap_js_functions %&#125;</span><br><span class="xml">                </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">for</span></span> fn in c.bmap_js_functions.items %&#125;</span><br><span class="xml">                    </span><span class="hljs-template-variable">&#123;&#123; fn &#125;&#125;</span><br><span class="xml">                </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endfor</span></span> %&#125;</span><br><span class="xml">            </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endif</span></span> %&#125;</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endif</span></span> %&#125;</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">if</span></span> c.width.endswith('%') %&#125;</span><br><span class="xml">            window.addEventListener('resize', function()&#123;</span><br><span class="xml">                chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">.resize();</span><br><span class="xml">            &#125;)</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endif</span></span> %&#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>   </span><br><span class="xml">    var x=window.innerWidth;</span><br><span class="xml">    function resizeFresh()&#123;</span><br><span class="xml">        if(x!=window.innerWidth)</span><br><span class="xml">            location.reload();</span><br><span class="xml">    &#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="hljs-template-tag">&#123;%- <span class="hljs-name"><span class="hljs-keyword">endmacro</span></span> %&#125;</span><br></code></pre></td></tr></table></figure>
-<p>　　<strong>step2.</strong> 修改.\Lib\site-packages\pyecharts\render\templates\ <strong>simple_chart.html</strong>  </p>
-<figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs django"><span class="hljs-template-tag">&#123;% <span class="hljs-name">import</span> 'macro' <span class="hljs-keyword">as</span> macro %&#125;</span><br><span class="xml"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span></span><span class="hljs-template-variable">&#123;&#123; chart.page_title &#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=yes"</span>&gt;</span></span><br><span class="xml">    </span><span class="hljs-template-variable">&#123;&#123; macro.render_chart_dependencies(chart) &#125;&#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/css"</span>&gt;</span></span><br><span class="xml">        html,body&#123;</span><br><span class="xml">            height:100%;</span><br><span class="xml">            width:100%</span><br><span class="xml">    &#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">onresize</span>=<span class="hljs-string">"resizeFresh()"</span>&gt;</span></span><br><span class="xml">    </span><span class="hljs-template-variable">&#123;&#123; macro.render_chart_content(chart) &#125;&#125;</span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
-
-<h2 id="可视化分析-pyecharts"><a href="#可视化分析-pyecharts" class="headerlink" title="可视化分析[pyecharts]"></a>可视化分析[pyecharts]</h2><p>　　pyecharts相关配置：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Python">!jupyter trust Visualization.ipynb<br><br><span class="hljs-keyword">import</span> warnings<br>warnings.filterwarnings(<span class="hljs-string">'ignore'</span>)<br><br><span class="hljs-keyword">from</span> pyecharts.globals <span class="hljs-keyword">import</span> CurrentConfig, NotebookType, OnlineHostType<br><span class="hljs-comment">#http://127.0.0.1:8000/assets/</span><br><br>CurrentConfig.ONLINE_HOST = <span class="hljs-string">'https://assets.pyecharts.org/assets/'</span><br>CurrentConfig.NOTEBOOK_TYPE = NotebookType.JUPYTER_LAB<br><br>CurrentConfig.ONLINE_HOST<br></code></pre></td></tr></table></figure>
-
-<h3 id="全球手机出货量-市场份额数据可视化"><a href="#全球手机出货量-市场份额数据可视化" class="headerlink" title="全球手机出货量/市场份额数据可视化"></a>全球手机出货量/市场份额数据可视化</h3><p> 　　剔除部分有缺失的数据：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Python">GSMS = pd.read_csv(<span class="hljs-string">'Global_Smartphone_Market_Share.csv'</span>).iloc[:,<span class="hljs-number">0</span>:<span class="hljs-number">5</span>]<br><br>print(<span class="hljs-string">'deleted:'</span>,set(GSMS.iloc[np.where(GSMS.isnull())[<span class="hljs-number">0</span>],<span class="hljs-number">0</span>].tolist()))<br>GSMS = GSMS[~GSMS.Vendor.isin(GSMS.iloc[np.where(GSMS.isnull())[<span class="hljs-number">0</span>],<span class="hljs-number">0</span>].tolist())]<br><br>display(GSMS)<br></code></pre></td></tr></table></figure>
-<p>　　<br>　　deleted: {‘Lenovo’, ‘Realme’, ‘LG’}  </p>
+<p>　　<strong>step1.</strong> 修改.\Lib\site-packages\pyecharts\render\templates\ <strong>macro</strong><br><figure class="highlight twig"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs twig"><span class="hljs-template-tag">&#123;%- <span class="hljs-name"><span class="hljs-keyword">macro</span></span> render_chart_content(c) -%&#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"chart-container"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"width:95%; height:95%; margin:auto; top:30px"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span></span><br><span class="xml">        var chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml"> = echarts.init(</span><br><span class="xml">            document.getElementById('</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">'), '</span><span class="hljs-template-variable">&#123;&#123; c.theme &#125;&#125;</span><span class="xml">', &#123;renderer: '</span><span class="hljs-template-variable">&#123;&#123; c.renderer &#125;&#125;</span><span class="xml">'&#125;);</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">for</span></span> js in c.js_functions.items %&#125;</span><br><span class="xml">            </span><span class="hljs-template-variable">&#123;&#123; js &#125;&#125;</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endfor</span></span> %&#125;</span><br><span class="xml">        var option_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml"> = </span><span class="hljs-template-variable">&#123;&#123; c.json_contents &#125;&#125;</span><span class="xml">;</span><br><span class="xml">        chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">.setOption(option_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">);</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">if</span></span> c._is_geo_chart %&#125;</span><br><span class="xml">            var bmap = chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">.getModel().getComponent('bmap').getBMap();</span><br><span class="xml">            </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">if</span></span> c.bmap_js_functions %&#125;</span><br><span class="xml">                </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">for</span></span> fn in c.bmap_js_functions.items %&#125;</span><br><span class="xml">                    </span><span class="hljs-template-variable">&#123;&#123; fn &#125;&#125;</span><br><span class="xml">                </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endfor</span></span> %&#125;</span><br><span class="xml">            </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endif</span></span> %&#125;</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endif</span></span> %&#125;</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">if</span></span> c.width.endswith('%') %&#125;</span><br><span class="xml">            window.addEventListener('resize', function()&#123;</span><br><span class="xml">                chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">.resize();</span><br><span class="xml">            &#125;)</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endif</span></span> %&#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>   </span><br><span class="xml">    var x=window.innerWidth;</span><br><span class="xml">    function resizeFresh()&#123;</span><br><span class="xml">        if(x!=window.innerWidth)</span><br><span class="xml">            location.reload();</span><br><span class="xml">    &#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="hljs-template-tag">&#123;%- <span class="hljs-name"><span class="hljs-keyword">endmacro</span></span> %&#125;</span><br></code></pre></td></tr></table></figure><br>　　<strong>step2.</strong> 修改.\Lib\site-packages\pyecharts\render\templates\ <strong>simple_chart.html</strong><br><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs django"><span class="hljs-template-tag">&#123;% <span class="hljs-name">import</span> 'macro' <span class="hljs-keyword">as</span> macro %&#125;</span><br><span class="xml"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span></span><span class="hljs-template-variable">&#123;&#123; chart.page_title &#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=yes"</span>&gt;</span></span><br><span class="xml">    </span><span class="hljs-template-variable">&#123;&#123; macro.render_chart_dependencies(chart) &#125;&#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/css"</span>&gt;</span></span><br><span class="xml">        html,body&#123;</span><br><span class="xml">            height:100%;</span><br><span class="xml">            width:100%</span><br><span class="xml">    &#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">onresize</span>=<span class="hljs-string">"resizeFresh()"</span>&gt;</span></span><br><span class="xml">    </span><span class="hljs-template-variable">&#123;&#123; macro.render_chart_content(chart) &#125;&#125;</span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></code></pre></td></tr></table></figure></p>
+<h2 id="可视化分析-pyecharts"><a href="#可视化分析-pyecharts" class="headerlink" title="可视化分析[pyecharts]"></a>可视化分析[pyecharts]</h2><p>　　pyecharts相关配置：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Python">!jupyter trust Visualization.ipynb<br><br><span class="hljs-keyword">import</span> warnings<br>warnings.filterwarnings(<span class="hljs-string">'ignore'</span>)<br><br><span class="hljs-keyword">from</span> pyecharts.globals <span class="hljs-keyword">import</span> CurrentConfig, NotebookType, OnlineHostType<br><span class="hljs-comment">#http://127.0.0.1:8000/assets/</span><br><br>CurrentConfig.ONLINE_HOST = <span class="hljs-string">'https://assets.pyecharts.org/assets/'</span><br>CurrentConfig.NOTEBOOK_TYPE = NotebookType.JUPYTER_LAB<br><br>CurrentConfig.ONLINE_HOST<br></code></pre></td></tr></table></figure></p>
+<h3 id="全球手机出货量-市场份额数据可视化"><a href="#全球手机出货量-市场份额数据可视化" class="headerlink" title="全球手机出货量/市场份额数据可视化"></a>全球手机出货量/市场份额数据可视化</h3><p> 　　剔除部分有缺失的数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Python">GSMS = pd.read_csv(<span class="hljs-string">'Global_Smartphone_Market_Share.csv'</span>).iloc[:,<span class="hljs-number">0</span>:<span class="hljs-number">5</span>]<br><br>print(<span class="hljs-string">'deleted:'</span>,set(GSMS.iloc[np.where(GSMS.isnull())[<span class="hljs-number">0</span>],<span class="hljs-number">0</span>].tolist()))<br>GSMS = GSMS[~GSMS.Vendor.isin(GSMS.iloc[np.where(GSMS.isnull())[<span class="hljs-number">0</span>],<span class="hljs-number">0</span>].tolist())]<br><br>display(GSMS)<br></code></pre></td></tr></table></figure><br>　　<br>　　deleted: {‘Lenovo’, ‘Realme’, ‘LG’}  </p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -262,7 +255,8 @@
 <th>市场份额</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>0</td>
 <td>Samsung</td>
 <td>2018</td>
@@ -886,9 +880,11 @@
 <td>35.5</td>
 <td>10.0%</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h4 id="2018Q1-2021Q1-全球智能手机出货量-市场份额"><a href="#2018Q1-2021Q1-全球智能手机出货量-市场份额" class="headerlink" title="2018Q1 - 2021Q1 全球智能手机出货量/市场份额"></a>2018Q1 - 2021Q1 全球智能手机出货量/市场份额</h4><h5 id="出货量（按年份）柱状图"><a href="#出货量（按年份）柱状图" class="headerlink" title="出货量（按年份）柱状图"></a>出货量（按年份）柱状图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> pyecharts.charts <span class="hljs-keyword">import</span> Bar<br><br>grouped_df_year = GSMS[GSMS.Year &lt; <span class="hljs-number">2021</span>].groupby([<span class="hljs-string">'Vendor'</span>,<span class="hljs-string">'Year'</span>]).agg(&#123;<span class="hljs-string">'Shipment_Volumes'</span>:<span class="hljs-string">'sum'</span>,<span class="hljs-string">'Market_Share'</span>:<span class="hljs-string">'sum'</span>&#125;).reset_index()<br>grouped_df_year.Shipment_Volumes = round(grouped_df_year.Shipment_Volumes,<span class="hljs-number">1</span>)<br><br>bar = Bar(init_opts=opts.InitOpts(theme=ThemeType.LIGHT,\<br>                                  width=<span class="hljs-string">'1100px'</span>,\<br>                                  height=<span class="hljs-string">'500px'</span>))\<br>            .add_xaxis(grouped_df_year.Vendor.unique().tolist())\<br>            .set_global_opts(title_opts=opts.TitleOpts(title=<span class="hljs-string">'2018-2020全球年出货量'</span>),\<br>                             legend_opts=opts.LegendOpts(type_=<span class="hljs-string">'plain'</span>,orient=<span class="hljs-string">'horizontal'</span>))<br><br><span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> grouped_df_year.Year.unique():<br>    bar = bar.add_yaxis(str(y) + <span class="hljs-string">'年全球出货量（百万）'</span>,grouped_df_year[grouped_df_year.Year == y].Shipment_Volumes.tolist())<br>    <br>bar.render_notebook()<br></code></pre></td></tr></table></figure>
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -1118,7 +1114,7 @@
 </html>  
 
 <h5 id="出货量（按季度）折线图"><a href="#出货量（按季度）折线图" class="headerlink" title="出货量（按季度）折线图"></a>出货量（按季度）折线图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> pyecharts.charts <span class="hljs-keyword">import</span> Line<br><br>line = Line(init_opts=opts.InitOpts(theme=ThemeType.LIGHT,<br>                                  width=<span class="hljs-string">'1200px'</span>,<br>                                  height=<span class="hljs-string">'550px'</span>))\<br>            .add_xaxis((GSMS.Year.astype(str) + GSMS.Quarterly.astype(str)).drop_duplicates(keep=<span class="hljs-string">'first'</span>).tolist())\<br>            .set_global_opts(title_opts=opts.TitleOpts(title=<span class="hljs-string">'2018Q1-2021Q1\n季度全球出货量'</span>),\<br>                             legend_opts=opts.LegendOpts(type_=<span class="hljs-string">'scroll'</span>,pos_top=<span class="hljs-number">10</span>,pos_left = <span class="hljs-number">100</span>, orient=<span class="hljs-string">'horizontal'</span>))<span class="hljs-comment">#horizontal vertical</span><br><br><br><span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> grouped_df_year.Vendor.unique():<br>    line = line.add_yaxis(str(v) + <span class="hljs-string">'季度全球出货量（百万）'</span>,GSMS[GSMS.Vendor == v].Shipment_Volumes.tolist())<br><br>line.render_notebook()<br></code></pre></td></tr></table></figure>
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -1767,7 +1763,7 @@
 
 
 <h5 id="市场份额（按季度）折线图"><a href="#市场份额（按季度）折线图" class="headerlink" title="市场份额（按季度）折线图"></a>市场份额（按季度）折线图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> pyecharts.charts <span class="hljs-keyword">import</span> Line<br><br>line = Line(init_opts=opts.InitOpts(theme=ThemeType.LIGHT,<br>                                  width=<span class="hljs-string">'1200px'</span>,<br>                                  height=<span class="hljs-string">'550px'</span>))\<br>            .add_xaxis((GSMS.Year.astype(str) + GSMS.Quarterly.astype(str)).drop_duplicates(keep=<span class="hljs-string">'first'</span>).tolist())\<br>            .set_global_opts(title_opts=opts.TitleOpts(title=<span class="hljs-string">'2018Q1-2021Q1\n季度全球份额'</span>),\<br>                             legend_opts=opts.LegendOpts(type_=<span class="hljs-string">'scroll'</span>,pos_top=<span class="hljs-number">10</span>,pos_left = <span class="hljs-number">210</span>, orient=<span class="hljs-string">'horizontal'</span>))<span class="hljs-comment">#horizontal vertical</span><br><br><br><span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> grouped_df_year.Vendor.unique():<br>    line = line.add_yaxis(str(v) + <span class="hljs-string">'季度全球份额（%）'</span>,np.round(<span class="hljs-number">100</span> * GSMS[GSMS.Vendor == v].Market_Share, <span class="hljs-number">0</span>).tolist())<br><br>line.render_notebook()<br></code></pre></td></tr></table></figure>
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -2415,9 +2411,8 @@
 </html>
 
 <h5 id="市场份额（按季度）饼状图-南丁格尔玫瑰图"><a href="#市场份额（按季度）饼状图-南丁格尔玫瑰图" class="headerlink" title="市场份额（按季度）饼状图/南丁格尔玫瑰图"></a>市场份额（按季度）饼状图/南丁格尔玫瑰图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> pyecharts.charts <span class="hljs-keyword">import</span> Pie<br><br>pies = []<br>pie = Pie(init_opts=opts.InitOpts(theme=ThemeType.LIGHT,width=<span class="hljs-string">'1500px'</span>,height=<span class="hljs-string">'1500px'</span>))<br><span class="hljs-keyword">for</span> xi, y <span class="hljs-keyword">in</span> enumerate(GSMS.Year.unique()):<br>    _ = GSMS[(GSMS.Year == y)]<br>    <span class="hljs-keyword">for</span> yi, q <span class="hljs-keyword">in</span> enumerate(_.Quarterly.unique()):<br>        df_temp = GSMS[(GSMS.Year == y) &amp; (GSMS.Quarterly == q)]<br>        <br>        data_pair = [list(_) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> zip(df_temp.Vendor.tolist() + [<span class="hljs-string">'Others'</span>], <br>                                          df_temp.Market_Share.tolist() + [round(<span class="hljs-number">1</span> - sum(df_temp.Market_Share.tolist()),<span class="hljs-number">1</span>)])]<br>        pie = pie.add(series_name=str(y) + str(q),<br>                     data_pair=data_pair,<br>                     rosetype=<span class="hljs-literal">None</span>,<span class="hljs-comment">#'area',</span><br>                     radius=<span class="hljs-number">75</span>,<br>                     center=[<span class="hljs-number">300</span> * (yi + <span class="hljs-number">1</span>) - <span class="hljs-number">150</span>,  <span class="hljs-number">300</span> * (xi + <span class="hljs-number">1</span>) - <span class="hljs-number">150</span>],<br>                     label_opts=opts.LabelOpts(is_show=<span class="hljs-literal">False</span>, position=<span class="hljs-string">"center"</span>),)\<br>                .set_series_opts(tooltip_opts=opts.TooltipOpts(trigger=<span class="hljs-string">"item"</span>, formatter=<span class="hljs-string">"&#123;b&#125; &lt;br/&gt;&#123;a&#125;: &#123;c&#125;"</span>),<br>                                 label_opts=opts.LabelOpts(color=<span class="hljs-string">"rgba(0, 0, 1, 0.8)"</span>),)\<br>                .set_global_opts(legend_opts=opts.LegendOpts(type_=<span class="hljs-string">'scroll'</span>,pos_left=<span class="hljs-number">0</span>, orient=<span class="hljs-string">'horizontal'</span>))<br>                <br>pie.render_notebook()<br></code></pre></td></tr></table></figure>
-
 <p><strong>2018 Q1 - Q4</strong></p>
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -2786,7 +2781,7 @@
 </html>
 
 <p><strong>2019 Q1 - Q4</strong></p>
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -3154,7 +3149,7 @@
 </body>
 </html>
 
-<p><strong>2020 Q1 - Q4</strong><br><!DOCTYPE html></p>
+<p><strong>2020 Q1 - Q4</strong><br>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -3523,7 +3518,7 @@
 </html>
 
 <p><strong>2021 Q1</strong></p>
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -3683,6 +3678,7 @@
 </html>
 
 <h3 id="国内手机市场份额数据可视化"><a href="#国内手机市场份额数据可视化" class="headerlink" title="国内手机市场份额数据可视化"></a>国内手机市场份额数据可视化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Python">CSMS = pd.read_csv(<span class="hljs-string">'China_Smartphone_Market_Share.csv'</span>).iloc[:,<span class="hljs-number">0</span>:<span class="hljs-number">4</span>]<br>CSMS.Market_Share = CSMS.Market_Share.str[:<span class="hljs-number">-1</span>].astype(int)<br></code></pre></td></tr></table></figure>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -3693,7 +3689,8 @@
 <th>市场份额</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>0</td>
 <td>Huawei</td>
 <td>2017</td>
@@ -4288,10 +4285,11 @@
 <td>Q1</td>
 <td>13%</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h4 id="2017Q1-2021Q1-国内智能手机市场份额"><a href="#2017Q1-2021Q1-国内智能手机市场份额" class="headerlink" title="2017Q1 - 2021Q1 国内智能手机市场份额"></a>2017Q1 - 2021Q1 国内智能手机市场份额</h4><h5 id="市场份额（按季度）折线图-1"><a href="#市场份额（按季度）折线图-1" class="headerlink" title="市场份额（按季度）折线图"></a>市场份额（按季度）折线图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> pyecharts.charts <span class="hljs-keyword">import</span> Line<br><br>line = Line(init_opts=opts.InitOpts(theme=ThemeType.LIGHT,<br>                                  width=<span class="hljs-string">'1200px'</span>,<br>                                  height=<span class="hljs-string">'550px'</span>))\<br>            .add_xaxis((CSMS.Year.astype(str) + CSMS.Quarterly.astype(str)).drop_duplicates(keep=<span class="hljs-string">'first'</span>).tolist())\<br>            .set_global_opts(title_opts=opts.TitleOpts(title=<span class="hljs-string">''</span>),\<br>                             legend_opts=opts.LegendOpts(type_=<span class="hljs-string">'scroll'</span>,pos_top=<span class="hljs-number">10</span>, orient=<span class="hljs-string">'horizontal'</span>))<span class="hljs-comment">#horizontal vertical</span><br><br><br><span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> grouped_df_year.Vendor.unique():<br>    line = line.add_yaxis(str(v) + <span class="hljs-string">'季度全球份额（%）'</span>,np.round(<span class="hljs-number">100</span> * CSMS[CSMS.Vendor == v].Market_Share, <span class="hljs-number">0</span>).tolist())<br><br>line.render_notebook()<br></code></pre></td></tr></table></figure>
-
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -4970,9 +4968,8 @@
 </html>
 
 <h5 id="市场份额（按季度）饼状图-南丁格尔玫瑰图-1"><a href="#市场份额（按季度）饼状图-南丁格尔玫瑰图-1" class="headerlink" title="市场份额（按季度）饼状图/南丁格尔玫瑰图"></a>市场份额（按季度）饼状图/南丁格尔玫瑰图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> pyecharts.charts <span class="hljs-keyword">import</span> Pie<br><br>pies = []<br>pie = Pie(init_opts=opts.InitOpts(theme=ThemeType.LIGHT,width=<span class="hljs-string">'1500px'</span>,height=<span class="hljs-string">'1500px'</span>))<br><span class="hljs-keyword">for</span> xi, y <span class="hljs-keyword">in</span> enumerate(GSMS.Year.unique()):<br>    _ = CSMS[(CSMS.Year == y)]<br>    <span class="hljs-keyword">for</span> yi, q <span class="hljs-keyword">in</span> enumerate(_.Quarterly.unique()):<br>        df_temp = CSMS[(CSMS.Year == y) &amp; (CSMS.Quarterly == q)]<br>        <br>        data_pair = [list(_) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> zip(df_temp.Vendor.tolist() + [<span class="hljs-string">'Others'</span>], <br>                                          df_temp.Market_Share.tolist() + [round(<span class="hljs-number">1</span> - sum(df_temp.Market_Share.tolist()),<span class="hljs-number">1</span>)])]<br>        pie = pie.add(series_name=str(y) + str(q),<br>                     data_pair=data_pair,<br>                     rosetype=<span class="hljs-literal">None</span>,<span class="hljs-comment">#'area',</span><br>                     radius=<span class="hljs-number">75</span>,<br>                     center=[<span class="hljs-number">300</span> * (yi + <span class="hljs-number">1</span>) - <span class="hljs-number">150</span>,  <span class="hljs-number">300</span> * (xi + <span class="hljs-number">1</span>) - <span class="hljs-number">150</span>],<br>                     label_opts=opts.LabelOpts(is_show=<span class="hljs-literal">False</span>, position=<span class="hljs-string">"center"</span>),)\<br>                .set_series_opts(tooltip_opts=opts.TooltipOpts(trigger=<span class="hljs-string">"item"</span>, formatter=<span class="hljs-string">"&#123;b&#125; &lt;br/&gt;&#123;a&#125;: &#123;c&#125;"</span>),<br>                                 label_opts=opts.LabelOpts(color=<span class="hljs-string">"rgba(0, 0, 1, 0.8)"</span>),)\<br>                .set_global_opts(legend_opts=opts.LegendOpts(type_=<span class="hljs-string">'scroll'</span>,pos_left=<span class="hljs-number">0</span>, orient=<span class="hljs-string">'horizontal'</span>))<br><br>pie.render_notebook()<br></code></pre></td></tr></table></figure>
-
 <p><strong>2017 Q1 - Q4</strong>  </p>
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -5325,7 +5322,7 @@
 
 
 <p><strong>2018 Q1 - Q4</strong></p>
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -5677,7 +5674,7 @@
 </html>
 
 <p><strong>2019 Q1 - Q4</strong></p>
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -6030,7 +6027,7 @@
 
 
 <p><strong>2020 Q1 - Q4</strong></p>
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -6382,7 +6379,7 @@
 </html>
 
 <p><strong>2021 Q1</strong></p>
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -6537,7 +6534,7 @@
 </html>
 
 <h3 id="小米公司财报情况"><a href="#小米公司财报情况" class="headerlink" title="小米公司财报情况"></a>小米公司财报情况</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Python">FR = pd.read_csv(<span class="hljs-string">'Financial_Report_Xiaomi.csv'</span>)<br>FR = FR.sort_values(by=<span class="hljs-string">'年度'</span>)<br>FR<br></code></pre></td></tr></table></figure>
-
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -6549,7 +6546,8 @@
 <th>主营利润率</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>0</td>
 <td>2015</td>
 <td>668.11亿元</td>
@@ -6597,10 +6595,11 @@
 <td>367.52亿元</td>
 <td>8.24%</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="全球市场Top国家-地区可视化"><a href="#全球市场Top国家-地区可视化" class="headerlink" title="全球市场Top国家/地区可视化"></a>全球市场Top国家/地区可视化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs Python">Global_top5 = pd.read_csv(<span class="hljs-string">'Global_Top5.csv'</span>)<br><br><span class="hljs-keyword">from</span> pyecharts.charts <span class="hljs-keyword">import</span> Map, Geo<br><br>value = Global_top5[<span class="hljs-string">'rank'</span>].tolist()<br>attr = Global_top5[<span class="hljs-string">'country'</span>].tolist()<br>map = Map( init_opts=opts.InitOpts(width=<span class="hljs-string">"1900px"</span>, height=<span class="hljs-string">"900px"</span>, bg_color=<span class="hljs-string">"#ADD8E6"</span>,<br>                                       page_title=<span class="hljs-string">"-"</span>,theme=ThemeType.LIGHT))<br><br>map.add(<span class="hljs-string">"Rank"</span>,[list(z) <span class="hljs-keyword">for</span> z <span class="hljs-keyword">in</span> zip(attr, value)],is_map_symbol_show=<span class="hljs-literal">False</span>,<br>    maptype=<span class="hljs-string">"world"</span>,label_opts=opts.LabelOpts(is_show=<span class="hljs-literal">False</span>),)<br><br>map.set_global_opts(title_opts = opts.TitleOpts(title=<span class="hljs-string">'全球销量Top5国家和地区（不完全统计，至2021/05）'</span>),<br>    legend_opts=opts.LegendOpts(is_show=<span class="hljs-literal">False</span>),<br>    visualmap_opts = opts.VisualMapOpts(min_=<span class="hljs-number">1</span>,max_=<span class="hljs-number">5</span>,range_color=map.colors))<br><br>map.render(<span class="hljs-string">'map.html'</span>)<br></code></pre></td></tr></table></figure>
-
-<!DOCTYPE html>
+<p>&lt;!DOCTYPE html&gt;</p>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -6956,11 +6955,17 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2021/ckosurgai000g50lx2wzwhpat/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机数据安全复习要点总结</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/ckoq14kld000boclxb8w10tcz/">
+                      <a href="/2021/ckosurga4000b50lx7zrycycn/">
                         <span class="hidden-mobile">[赛后总结]山东省第二届数据应用创新创业大赛-主赛场——疫情密切接触人员追踪</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -7127,6 +7132,45 @@
 
 
 
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
 
 
 

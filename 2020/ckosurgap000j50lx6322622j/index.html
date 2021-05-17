@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      403 字
+      402 字
     </span>
   
 
@@ -238,20 +238,10 @@
             <h1 style="display: none">第三届全国高校绿色计算大赛半决赛——OpenEuler（第一阶段）</h1>
             
             <div class="markdown-body">
-              <h2 id="OpenEuler-、-Shell-编程"><a href="#OpenEuler-、-Shell-编程" class="headerlink" title="OpenEuler 、 Shell 编程"></a>OpenEuler 、 Shell 编程</h2><h3 id="1-正则替换"><a href="#1-正则替换" class="headerlink" title="1.正则替换"></a>1.正则替换</h3><p>系统提供了一个待处理的test.txt文件，其内容为：</p>
-<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs llvm">ZhangSan<span class="hljs-number">25</span>man<br>LiS<span class="hljs-keyword">i7</span>man<br>WangWu<span class="hljs-number">16</span>woman<br>Alex<span class="hljs-number">77</span>man<br></code></pre></td></tr></table></figure>
-<p>请在右侧的编码区域，通过shell脚本将文件内容中的三列用 ,(英文逗号) 分割开来。其中，第一列为人名，由字母组成；第二列为年龄，由数字组成；第三列为性别，只会是 man 或者 woman。  </p>
-<p>处理完成后预期结果如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br>ZhangSan,25,man<br>LiSi,7,man<br>WangWu,16,woman<br>Alex,77,man<br></code></pre></td></tr></table></figure>
-<p>Solve：<br>正则表达式匹配字母+任意位数字+字母，分别以\1，\2，\3引用匹配到的内容，添加逗号即可。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">cat test.txt | sed "s/\([a-z]\)\([0-9]*[0-9]\)\([a-z]\)/\1,\2,\3/g"<br></code></pre></td></tr></table></figure>
+              <h2 id="OpenEuler-、-Shell-编程"><a href="#OpenEuler-、-Shell-编程" class="headerlink" title="OpenEuler 、 Shell 编程"></a>OpenEuler 、 Shell 编程</h2><h3 id="1-正则替换"><a href="#1-正则替换" class="headerlink" title="1.正则替换"></a>1.正则替换</h3><p>系统提供了一个待处理的test.txt文件，其内容为：<br><figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs llvm">ZhangSan<span class="hljs-number">25</span>man<br>LiS<span class="hljs-keyword">i7</span>man<br>WangWu<span class="hljs-number">16</span>woman<br>Alex<span class="hljs-number">77</span>man<br></code></pre></td></tr></table></figure><br>请在右侧的编码区域，通过shell脚本将文件内容中的三列用 ,(英文逗号) 分割开来。其中，第一列为人名，由字母组成；第二列为年龄，由数字组成；第三列为性别，只会是 man 或者 woman。  </p>
+<p>处理完成后预期结果如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br>ZhangSan,25,man<br>LiSi,7,man<br>WangWu,16,woman<br>Alex,77,man<br></code></pre></td></tr></table></figure><br>Solve：<br>正则表达式匹配字母+任意位数字+字母，分别以\1，\2，\3引用匹配到的内容，添加逗号即可。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">cat test.txt | sed "s/\([a-z]\)\([0-9]*[0-9]\)\([a-z]\)/\1,\2,\3/g"<br></code></pre></td></tr></table></figure></p>
+<h3 id="2-求集合差集"><a href="#2-求集合差集" class="headerlink" title="2.求集合差集"></a>2.求集合差集</h3><p>系统提供了两个待处理文件a.txt和b.txt，其中文件 a.txt 中的部分内容如下：<br><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">Hello<br>My <span class="hljs-type">Name</span> <span class="hljs-keyword">is</span> Alice<br>What <span class="hljs-keyword">is</span> your <span class="hljs-type">name</span><br>I am Bob<br>I came <span class="hljs-keyword">from</span> China<br><span class="hljs-keyword">Where</span> are you <span class="hljs-keyword">from</span><br>Oh my God<br></code></pre></td></tr></table></figure><br>文件 b.txt 中的部分内容如下：<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">Alice</span> is a good <span class="hljs-keyword">boy</span><br><span class="hljs-keyword">Bob </span>is a nice man <span class="hljs-keyword">and </span>he is one of my <span class="hljs-keyword">best </span>friend<br><span class="hljs-symbol">God</span> <span class="hljs-keyword">bless </span>you<br></code></pre></td></tr></table></figure><br>将文件 a.txt 中每一行的最后一个单词作为集合 1 ；将文件 b.txt 中每一行的第一个单词作为集合 2 ；请使用 shell 语言编写程序，输出包含在集合 1 但不包含在集合 2 的所有元素。<br>Solve：通过正则将a.txt中最后一个空格前的全部字符替换为空，b.txt中第一个空格后的全部字符替换为空，sort后通过uniq命令解决。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br>sed -i <span class="hljs-string">'s/.* //g'</span> a.txt<br>sed -i <span class="hljs-string">'s/ .*//g'</span> b.txt<br>grep -F -v -f b.txt a.txt | sort | uniq<br></code></pre></td></tr></table></figure></p>
 
-<h3 id="2-求集合差集"><a href="#2-求集合差集" class="headerlink" title="2.求集合差集"></a>2.求集合差集</h3><p>系统提供了两个待处理文件a.txt和b.txt，其中文件 a.txt 中的部分内容如下：</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">Hello<br>My <span class="hljs-type">Name</span> <span class="hljs-keyword">is</span> Alice<br>What <span class="hljs-keyword">is</span> your <span class="hljs-type">name</span><br>I am Bob<br>I came <span class="hljs-keyword">from</span> China<br><span class="hljs-keyword">Where</span> are you <span class="hljs-keyword">from</span><br>Oh my God<br></code></pre></td></tr></table></figure>
-<p>文件 b.txt 中的部分内容如下：</p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">Alice</span> is a good <span class="hljs-keyword">boy</span><br><span class="hljs-keyword">Bob </span>is a nice man <span class="hljs-keyword">and </span>he is one of my <span class="hljs-keyword">best </span>friend<br><span class="hljs-symbol">God</span> <span class="hljs-keyword">bless </span>you<br></code></pre></td></tr></table></figure>
-<p>将文件 a.txt 中每一行的最后一个单词作为集合 1 ；将文件 b.txt 中每一行的第一个单词作为集合 2 ；请使用 shell 语言编写程序，输出包含在集合 1 但不包含在集合 2 的所有元素。<br>Solve：通过正则将a.txt中最后一个空格前的全部字符替换为空，b.txt中第一个空格后的全部字符替换为空，sort后通过uniq命令解决。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br>sed -i <span class="hljs-string">'s/.* //g'</span> a.txt<br>sed -i <span class="hljs-string">'s/ .*//g'</span> b.txt<br>grep -F -v -f b.txt a.txt | sort | uniq<br></code></pre></td></tr></table></figure>
             </div>
             <hr>
             <div>
@@ -271,7 +261,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/ckoq14kla0009oclxho0p10dt/">
+                      <a href="/2020/ckosurga2000a50lx4nl39nwz/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">中移集成（雄安产业研究院）首届OneCity编程大赛</span>
                         <span class="visible-mobile">Previous</span>
@@ -281,7 +271,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/ckoq14klg000foclx4xq6ej99/">
+                      <a href="/2020/ckosurgak000h50lx1iotdhv7/">
                         <span class="hidden-mobile">[学习日志]智算之道——人工智能应用挑战赛</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -448,6 +438,45 @@
 
 
 
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
 
 
 

@@ -248,7 +248,7 @@
 <h3 id="结果出现负值"><a href="#结果出现负值" class="headerlink" title="结果出现负值"></a>结果出现负值</h3><p>　　GBDT是加法模型，下一轮都是上一轮预测值和实际值的残差作为label继续拟合，将结果相加，最后可能会出现负值，特别是例如CTR场景下大部分标签都为0的场景下更容易出现这种情况。</p>
 <h2 id="2020-7-21"><a href="#2020-7-21" class="headerlink" title="2020.7.21"></a>2020.7.21</h2><p>　　丢了几个缺失比较大的特征，对数据做了简单随机采样之后跑lgb5折交了一发，线上分数能到0.7，比预想中的要好，还有一定的提升空间，下一步打算从模型角度切入。</p>
 <h2 id="2020-7-22"><a href="#2020-7-22" class="headerlink" title="2020.7.22"></a>2020.7.22</h2><h3 id="error-Only-one-class-present-in-y-true"><a href="#error-Only-one-class-present-in-y-true" class="headerlink" title="error:Only one class present in y_true"></a>error:Only one class present in y_true</h3><p>　　DeepFM训练过程报错：Only one class present in y_true. ROC AUC score is not defined in that case.<br>　　定义的AUROC函数如下：<br>  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auroc</span><span class="hljs-params">(y_true, y_pred)</span>:</span><br>	<span class="hljs-keyword">return</span> tf.compat.v1.py_func(roc_auc_score, (y_true, y_pred), tf.double)<br></code></pre></td></tr></table></figure><br>　　AUC（ROC 曲线下的面积）需要足够数量的任一类才能有意义，而CTR样本中本身就存在着非常严重的正负样本不平衡的问题。<br>　　目前解决方案如下：<br>  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-comment"># AUC for a binary classifier</span><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auc</span><span class="hljs-params">(y_true, y_pred)</span>:</span><br>    ptas = tf.stack([binary_PTA(y_true, y_pred, k) <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> np.linspace(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1000</span>)], axis=<span class="hljs-number">0</span>)<br>    pfas = tf.stack([binary_PFA(y_true, y_pred, k) <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> np.linspace(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1000</span>)], axis=<span class="hljs-number">0</span>)<br>    pfas = tf.concat([tf.ones((<span class="hljs-number">1</span>,)), pfas], axis=<span class="hljs-number">0</span>)<br>    binSizes = -(pfas[<span class="hljs-number">1</span>:] - pfas[:<span class="hljs-number">-1</span>])<br>    s = ptas * binSizes<br>    <span class="hljs-keyword">return</span> K.sum(s, axis=<span class="hljs-number">0</span>)<br><br><span class="hljs-comment"># -----------------------------------------------------------------------------</span><br><span class="hljs-comment"># PFA, prob false alert for binary classifier</span><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">binary_PFA</span><span class="hljs-params">(y_true, y_pred, threshold=K.variable<span class="hljs-params">(value=<span class="hljs-number">0.5</span>)</span>)</span>:</span><br>    y_pred = K.cast(y_pred &gt;= threshold, <span class="hljs-string">'float32'</span>)<br>    <span class="hljs-comment"># N = total number of negative labels</span><br>    N = K.sum(<span class="hljs-number">1</span> - y_true)<br>    <span class="hljs-comment"># FP = total number of false alerts, alerts from the negative class labels</span><br>    FP = K.sum(y_pred - y_pred * y_true)<br>    <span class="hljs-keyword">return</span> FP / N<br><br><span class="hljs-comment"># -----------------------------------------------------------------------------</span><br><span class="hljs-comment"># P_TA prob true alerts for binary classifier</span><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">binary_PTA</span><span class="hljs-params">(y_true, y_pred, threshold=K.variable<span class="hljs-params">(value=<span class="hljs-number">0.5</span>)</span>)</span>:</span><br>    y_pred = K.cast(y_pred &gt;= threshold, <span class="hljs-string">'float32'</span>)<br>    <span class="hljs-comment"># P = total number of positive labels</span><br>    P = K.sum(y_true)<br>    <span class="hljs-comment"># TP = total number of correct alerts, alerts from the positive class labels</span><br>    TP = K.sum(y_pred * y_true)<br>    <span class="hljs-keyword">return</span> TP / P<br></code></pre></td></tr></table></figure><br>　　也可在整个训练过程完成后，在vaild_set上计算auc。<br>  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Python">pred_ans_val = model.predict(vaild_model_input, batch_size=<span class="hljs-number">512</span>)<br>print(<span class="hljs-string">'val_auc'</span>, roc_auc_score(vaild[target].values, pred_ans_val))<br></code></pre></td></tr></table></figure></p>
-<h2 id="2020-7-24"><a href="#2020-7-24" class="headerlink" title="2020.7.24"></a>2020.7.24</h2><h3 id="DeepFM参数调整"><a href="#DeepFM参数调整" class="headerlink" title="DeepFM参数调整"></a>DeepFM参数调整</h3><p>　　* <strong>Regression</strong><br>　　This implementation also supports regression task. To use DeepFM for regression, you can set loss_type as mse. Accordingly, you should use eval_metric for regression, e.g., mse or mae.*<br>　　DeepFM中task参数调整为regression后，loss也需随之进行更改。<br>  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Python">model = DeepFM(<br>	linear_feature_columns=linear_feature_columns,<br>	dnn_feature_columns=dnn_feature_columns,<br>	task=<span class="hljs-string">'regression'</span>,<br>	l2_reg_embedding=<span class="hljs-number">1e-5</span><br>  )<br>  <br>  model.compile(<br>  	<span class="hljs-string">'adam'</span>,<br>  	<span class="hljs-string">'mse'</span>,<br>  	metrics=[<span class="hljs-string">'accuracy'</span>]<br>      )<br></code></pre></td></tr></table></figure></p>
+<h2 id="2020-7-24"><a href="#2020-7-24" class="headerlink" title="2020.7.24"></a>2020.7.24</h2><h3 id="DeepFM参数调整"><a href="#DeepFM参数调整" class="headerlink" title="DeepFM参数调整"></a>DeepFM参数调整</h3><p>　　<em> <strong>Regression</strong><br>　　This implementation also supports regression task. To use DeepFM for regression, you can set loss_type as mse. Accordingly, you should use eval_metric for regression, e.g., mse or mae.</em><br>　　DeepFM中task参数调整为regression后，loss也需随之进行更改。<br>  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Python">model = DeepFM(<br>	linear_feature_columns=linear_feature_columns,<br>	dnn_feature_columns=dnn_feature_columns,<br>	task=<span class="hljs-string">'regression'</span>,<br>	l2_reg_embedding=<span class="hljs-number">1e-5</span><br>  )<br>  <br>  model.compile(<br>  	<span class="hljs-string">'adam'</span>,<br>  	<span class="hljs-string">'mse'</span>,<br>  	metrics=[<span class="hljs-string">'accuracy'</span>]<br>      )<br></code></pre></td></tr></table></figure></p>
 <h2 id="2020-7-29"><a href="#2020-7-29" class="headerlink" title="2020.7.29"></a>2020.7.29</h2><h3 id="onehot编码"><a href="#onehot编码" class="headerlink" title="onehot编码"></a>onehot编码</h3><p>　　OneHotEncoder 的输入为 2-D array，data[feat] 返回的 Series 为 1-D array。<br>  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">for</span> feat <span class="hljs-keyword">in</span> cat_features:<br>	ohe = OneHotEncoder()<br>	data[feat] = ohe.fit_transform(data[[feat]])<br></code></pre></td></tr></table></figure><br>　　将data[feat]改为data[[feat]]</p>
 <h2 id="2020-8-14"><a href="#2020-8-14" class="headerlink" title="2020.8.14"></a>2020.8.14</h2><h3 id="Error-Input-contains-NaN"><a href="#Error-Input-contains-NaN" class="headerlink" title="Error:Input contains NaN"></a>Error:Input contains NaN</h3><p>　　报错<em>ValueError: Input contains NaN, infinity or a value too large for dtype(‘float32’).</em><br>  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">for</span> index <span class="hljs-keyword">in</span> tr_x.columns:<br>	<span class="hljs-keyword">if</span>(df[index].isna().T.any()):<br>  	print(index,df[index].isna())<br><span class="hljs-comment"># ------</span><br>print(df[df.isnull().T.any()])<br></code></pre></td></tr></table></figure><br>　　若检查dataframe无空值后仍然报错。可尝试检查dataframe索引是否连续。<br>  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Python">df.reset_index(drop=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure></p>
 <h2 id="2020-8-15"><a href="#2020-8-15" class="headerlink" title="2020.8.15"></a>2020.8.15</h2><h3 id="pandas-apply设置进度条"><a href="#pandas-apply设置进度条" class="headerlink" title="pandas apply设置进度条"></a>pandas apply设置进度条</h3><p>　　apply速度较慢，可设置进度条实时显示处理进度。<br>  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd<br><span class="hljs-keyword">from</span> tqdm <span class="hljs-keyword">import</span> tqdm<br><br>tqdm.pandas(desc=<span class="hljs-string">'pandas bar'</span>)<br><br>test[<span class="hljs-string">'B'</span>] = test.progress_apply(<span class="hljs-keyword">lambda</span> x:func(x[<span class="hljs-string">'A'</span>]), axis=<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure></p>
@@ -272,7 +272,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/ckoq14kl90008oclxclkp83j1/">
+                      <a href="/2020/ckosurg9x000850lxfazp16zl/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Linux设置定时任务</span>
                         <span class="visible-mobile">Previous</span>
@@ -282,7 +282,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/ckoq14kl80006oclxceckare3/">
+                      <a href="/2020/ckosurg9v000750lx3tcpe9yx/">
                         <span class="hidden-mobile">Hexo+Nginx搭建静态页面博客</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -449,6 +449,45 @@
 
 
 
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
 
 
 

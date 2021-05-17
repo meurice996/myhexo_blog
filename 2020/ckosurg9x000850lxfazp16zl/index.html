@@ -18,7 +18,7 @@
   <meta name="author" content="meurice">
   <meta name="keywords" content="">
   
-  <title>Hello World - meurice&#39;s Notes</title>
+  <title>Linux设置定时任务 - meurice&#39;s Notes</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -164,7 +164,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Hello World">
+            <span class="h2" id="subtitle" title="Linux设置定时任务">
               
             </span>
 
@@ -179,8 +179,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-07-15 12:29" pubdate>
-        July 15, 2020 pm
+      <time datetime="2020-07-16 19:40" pubdate>
+        July 16, 2020 pm
       </time>
     </span>
   
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      73 字
+      215 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      2
        分钟
     </span>
   
@@ -235,22 +235,16 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Hello World</h1>
+            <h1 style="display: none">Linux设置定时任务</h1>
             
             <div class="markdown-body">
-              <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">"My New Post"</span><br></code></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+              <p>环境：CentOS 8</p>
+<h3 id="执行内容"><a href="#执行内容" class="headerlink" title="执行内容"></a>执行内容</h3><p>　　新建文件_crond.sh，作为定时执行的内容。<br>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">cd</span> /www/blog/hexo<br>git pull git@github.com:egname/egrepo.git<br><br><span class="hljs-comment">#echo pull successfully &gt; /home/gitpull.log</span><br></code></pre></td></tr></table></figure></p>
+<h3 id="crontab服务"><a href="#crontab服务" class="headerlink" title="crontab服务"></a>crontab服务</h3><p>　　启动crontab服务，CentOS版本不同，具体命令可能有所差异。<br>  <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">systemctl <span class="hljs-literal">start</span> crond<br></code></pre></td></tr></table></figure><br>　　启动服务</p>
+  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql">systemctl <span class="hljs-keyword">stop</span> crond            <span class="hljs-comment"># 关闭服务</span><br>systemctl restart crond         <span class="hljs-comment"># 重启服务     </span><br>systemctl reload crond          <span class="hljs-comment"># 重新载入配置</span><br>systemctl <span class="hljs-keyword">status</span> crond          <span class="hljs-comment"># 状态</span><br></code></pre></td></tr></table></figure>
+<h3 id="设置计时器"><a href="#设置计时器" class="headerlink" title="设置计时器"></a>设置计时器</h3><p>　　crontab 选项 参数<br>　　选项:<br>　　　　-e：编辑该用户的计时器设置；<br>　　　　-l：列出该用户的计时器设置；<br>　　　　-r：删除该用户的计时器设置；<br>　　　　-u：指定要设定计时器的用户名称。<br>  <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">crontab -e</span><br></code></pre></td></tr></table></figure></p>
+<p> 　　进入insert插入模式，以每五分钟执行一次为例。ESC后输入wq保存并退出。<br>  <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-emphasis">*/5 *</span> <span class="hljs-emphasis">* *</span> * /root/_crond.sh<br></code></pre></td></tr></table></figure><br>  <br></p>
+<p>  关于Crontab更多具体用法，您可以参考<a href="https://www.cnblogs.com/muscles/p/9532451.html" target="_blank" rel="noopener">这篇文章</a>。</p>
 
             </div>
             <hr>
@@ -271,15 +265,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/ckoq14kl80006oclxceckare3/">
+                      <a href="/2020/ckosurgag000f50lxf3174uoy/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Hexo+Nginx搭建静态页面博客</span>
+                        <span class="hidden-mobile">数据预处理——归一化与标准化</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2020/ckosurgae000e50lxefum6t4v/">
+                        <span class="hidden-mobile">[学习日志]2020 DIGIX全球校园AI算法精英大赛——赛道A</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
@@ -442,6 +442,45 @@
 
 
 
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
 
 
 

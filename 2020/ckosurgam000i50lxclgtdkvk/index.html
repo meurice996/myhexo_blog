@@ -284,7 +284,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/ckoq14kle000coclx1zp860vz/">
+                      <a href="/2020/ckosurga8000d50lxfdnvaqc4/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">[学习日志]2020 DIGIX全球校园AI算法精英大赛——赛道B</span>
                         <span class="visible-mobile">Previous</span>
@@ -294,7 +294,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/ckoq14klg000eoclxglre2u2u/">
+                      <a href="/2020/ckosurgag000f50lxf3174uoy/">
                         <span class="hidden-mobile">数据预处理——归一化与标准化</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -461,6 +461,45 @@
 
 
 
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
 
 
 
