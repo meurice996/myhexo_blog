@@ -1,0 +1,593 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;light&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="本文章就『Lending Club贷款数据转换与融合』、『行星数据分组与聚合』以及『德国能源数据时间序列分析』三个案例对Pandas中的部分分析方法进行小结。">
+  <meta name="author" content="meurice">
+  <meta name="keywords" content="">
+  
+  <title>大数据处理技术复习要点总结[Pandas] - meurice&#39;s Notes</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.6.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"meurice.xyz","root":"/","version":"1.8.10","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="meurice's Notes" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 80vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>meurice's Notes</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/index_img.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="大数据处理技术复习要点总结[Pandas]">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      meurice
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-05-25 13:39" pubdate>
+        May 25, 2021 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      34
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">大数据处理技术复习要点总结[Pandas]</h1>
+            
+            <div class="markdown-body">
+              <p>本文章就『Lending Club贷款数据转换与融合』、『行星数据分组与聚合』以及『德国能源数据时间序列分析』三个案例对Pandas中的部分分析方法进行小结。<br><a id="more"></a></p>
+<h2 id="Lending-Club贷款数据转换与融合"><a href="#Lending-Club贷款数据转换与融合" class="headerlink" title="Lending Club贷款数据转换与融合"></a>Lending Club贷款数据转换与融合</h2><p> 　　该案例完整Jupyter Notebook可参考<a href="http://cookdata.cn/note/view_static_note/5acc2adb881ca8e68cfbb1cd1347d28d/" target="_blank" rel="noopener">Lending Club贷款数据转换与融合</a>。</p>
+<h3 id="数据源"><a href="#数据源" class="headerlink" title="数据源"></a>数据源</h3><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">user</span> = pd.read_csv(<span class="hljs-string">"./input/user.csv"</span>)<br><span class="hljs-attr">loan</span> = pd.read_csv(<span class="hljs-string">"./input/loan.csv"</span>)<br><span class="hljs-attr">history</span> = pd.read_csv(<span class="hljs-string">"./input/history.csv"</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="随机采样-sample"><a href="#随机采样-sample" class="headerlink" title="随机采样(sample)"></a>随机采样(sample)</h3><p>　　随机查看贷款交易数据中的5行。 </p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">loan.sample(<span class="hljs-attribute">n</span>=5)<br></code></pre></td></tr></table></figure>
+<p>　　随机查看贷款交易数据中的1%。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">loan.sample(<span class="hljs-attribute">frac</span>=0.01)<br></code></pre></td></tr></table></figure><br>　　sample默认的是不放回采样（每个样本只可能出现一次），可以调整replace参数为True改为有放回采样。<br><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs excel">loan.sample(<span class="hljs-built_in">n</span>=<span class="hljs-number">10</span>,<span class="hljs-built_in">replace</span>=<span class="hljs-built_in">True</span>)<br></code></pre></td></tr></table></figure><br>　　若希望重复调用某次采样的结果，可以设定random_state参数为同一个数来实现。<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">loan.sample(n=<span class="hljs-number">5</span>,random_state=<span class="hljs-number">42</span>)<br></code></pre></td></tr></table></figure><br>　　除了行采样，sample也可以实现列采样，只需要调整axis参数为1即可。<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">loan.sample(n=<span class="hljs-number">3</span>,axis=<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure></p>
+<h3 id="数据融合-merge-join"><a href="#数据融合-merge-join" class="headerlink" title="数据融合(merge,join)"></a>数据融合(merge,join)</h3><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">test_user = user.loc[[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>]]<br>test_loan = loan[loan.user.isin([<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>])]<br></code></pre></td></tr></table></figure>
+<p>　　merge和join作为Pandas中常用的数据融合方法，目的都是将两个数据表通过共同变量进行连接。  </p>
+<h4 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h4><p>　　merge参数如下：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros">left.merge(right, <span class="hljs-attribute">how</span>=<span class="hljs-string">'inner'</span>, <span class="hljs-attribute">on</span>=None, <br>		<span class="hljs-attribute">left_on</span>=None, <span class="hljs-attribute">right_on</span>=None, <br>		<span class="hljs-attribute">left_index</span>=<span class="hljs-literal">False</span>, <span class="hljs-attribute">right_index</span>=<span class="hljs-literal">False</span>, <br>		<span class="hljs-attribute">sort</span>=<span class="hljs-literal">False</span>, suffixes=(<span class="hljs-string">'_x'</span>, <span class="hljs-string">'_y'</span>), <span class="hljs-attribute">indicator</span>=<span class="hljs-literal">False</span>)<br></code></pre></td></tr></table></figure><br>　　left和right分别指代要进行连接的两个数据框。<br>　　on, left_on, right_on, 用来指定连接的变量。若这一变量在两个数据框中命名相同，直接使用on指定即可，否则通过left_on和right_on分别指定左表变量名和右表变量名。<br>　　若需要基于数据框的索引进行连接，则要通过设定left_index和right_index的参数为True来实现。<br>　　how为连接方式，有’inner’, ‘left’, ‘right’, ‘outer’四种。  </p>
+<p>　　基于用户信息数据的’user_id’变量和贷款交易数据的’user’变量进行内连接(inner)。这种方式下，只有所选定列在左表与右表能匹配的行会被保留。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">test_user.merge(test_loan,<span class="hljs-attribute">how</span>=<span class="hljs-string">"inner"</span>,<br>				<span class="hljs-attribute">left_on</span>=<span class="hljs-string">"user_id"</span>,right_on="user")<br></code></pre></td></tr></table></figure><br>　　基于用户信息数据的’user_id’变量和贷款交易数据的’user’变量进行左连接(left)。这种方式下，左表所有行都被保留，不能匹配的部分用缺失值填充。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">test_user.merge(test_loan,<span class="hljs-attribute">how</span>=<span class="hljs-string">"left"</span>,<br>				<span class="hljs-attribute">left_on</span>=<span class="hljs-string">"user_id"</span>,right_on="user")<br></code></pre></td></tr></table></figure><br>　　基于用户信息数据的’user_id’变量和贷款交易数据的’user’变量进行右连接(right)。这种方式下，右表所有行都被保留，不能匹配的部分用缺失值填充。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">test_user.merge(test_loan,<span class="hljs-attribute">how</span>=<span class="hljs-string">"right"</span>,<br>				<span class="hljs-attribute">left_on</span>=<span class="hljs-string">"user_id"</span>,right_on="user")<br></code></pre></td></tr></table></figure><br>　　基于用户信息数据的’user_id’变量和贷款交易数据的’user’变量进行外连接(outer)。这种方式下，左表和右表所有行都会被保留，不能匹配的部分用缺失值填充。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">test_user.merge(test_loan,<span class="hljs-attribute">how</span>=<span class="hljs-string">"outer"</span>,<br>				<span class="hljs-attribute">left_on</span>=<span class="hljs-string">"user_id"</span>,right_on="user")<br></code></pre></td></tr></table></figure><br>　　merge中的indicator参数能很好地找到返回结果的来源,设定indicator参数为Ture后，返回结果中多了一列”_merge”，取值有”both”, “left_only”, “right_only”三种。分别代表左右表匹配成功，左表有而右表没有，右表有而左表没有三种情况。  </p>
+<script type="math/tex; mode=display">
+\begin{array}{c|c|c}
+ & .. & \_merge \\
+\hline
+ 0 & .. & both \\
+\hline
+ 1 & .. & left\_only \\
+\hline
+ 2 & .. & right\_only
+\end{array}</script><p>　　当左表与右表中变量同名时，我们可以通过suffixes参数为左表变量与右表变量附加不同字段，便于后续区分。  </p>
+<script type="math/tex; mode=display">
+\begin{array}{c|c|c|c|c|c|c|c}
+ & user & term\_l & grade\_l & .. & term\_r & grade\_r & .. \\
+\hline
+0 & 6 & 60 months & .. & .. & 60 months & .. & .. \\
+\hline
+.. & .. & .. & .. & .. & .. & .. & ..
+\end{array}</script><h4 id="join"><a href="#join" class="headerlink" title="join"></a>join</h4><p>　　join参数如下：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">left.join(right, <span class="hljs-attribute">on</span>=None, <span class="hljs-attribute">how</span>=<span class="hljs-string">'left'</span>,<br>		<span class="hljs-attribute">lsuffix</span>=<span class="hljs-string">''</span>, <span class="hljs-attribute">rsuffix</span>=<span class="hljs-string">''</span>, <span class="hljs-attribute">sort</span>=<span class="hljs-literal">False</span>)<br></code></pre></td></tr></table></figure><br>　　事实上，join就是merge的简化版本，所有join能实现的操作，都可以使用merge实现。  </p>
+<ul>
+<li>使用join时，右表只能基于索引进行连接；  </li>
+<li>通过on参数，可以指定左表进行连接的变量（可以是索引也可以是任意列）。   </li>
+</ul>
+<p>　　merge和join中还有一个参数sort，指定为True会让返回的结果按连接变量进行升序排列。  </p>
+<h3 id="排序-sort-index-sort-values"><a href="#排序-sort-index-sort-values" class="headerlink" title="排序(sort_index,sort_values)"></a>排序(sort_index,sort_values)</h3><p>　　Pandas中的sort_index和sort_values也可以对DataFrame进行排序，sort_index是按照索引进行排序，sort_values是按照指定变量排序。<br>　　例如想将用户历史数据按账户平均存款排序。<br><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">history.sort<span class="hljs-constructor">_values(<span class="hljs-params">by</span>='<span class="hljs-params">avg_cur_bal</span>')</span><br></code></pre></td></tr></table></figure><br>　　若要降序排列，可以指定ascending参数为False。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">history.sort_values(<span class="hljs-attribute">by</span>=<span class="hljs-string">'avg_cur_bal'</span>,<br>					<span class="hljs-attribute">ascending</span>=<span class="hljs-literal">False</span>)<br></code></pre></td></tr></table></figure><br>　　也可以指定对缺失值的排序方式，默认缺失值将排在最后，可以设定na_position为first将缺失值排在最前面。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">history.sort_values(<span class="hljs-attribute">by</span>=<span class="hljs-string">'avg_cur_bal'</span>,<br>					<span class="hljs-attribute">na_position</span>=<span class="hljs-string">'first'</span>)<br></code></pre></td></tr></table></figure></p>
+<h3 id="离散化-cut-qcut"><a href="#离散化-cut-qcut" class="headerlink" title="离散化(cut,qcut)"></a>离散化(cut,qcut)</h3><h4 id="cut"><a href="#cut" class="headerlink" title="cut"></a>cut</h4><p>　　使用cut函数按照指定的分割点对数据进行划分。<br>　　通过设定bin参数设定了分割点，将数据按照中位数进行了划分。同时设定了参数labels，使用这个参数可以方便地为新的划分区间命名。<br>　　<strong>左开右闭区间</strong>  </p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs maxima">annual_inc = pd.cut(<span class="hljs-built_in">combine</span>.annual_inc,<br>					bins=[<span class="hljs-built_in">np</span>.<span class="hljs-built_in">min</span>(<span class="hljs-built_in">combine</span>.annual_inc)-<span class="hljs-number">1</span>,<br>                    	<span class="hljs-built_in">np</span>.percentile(<span class="hljs-built_in">combine</span>.annual_inc,<span class="hljs-number">50</span>),<br>                    	<span class="hljs-built_in">np</span>.<span class="hljs-built_in">max</span>(<span class="hljs-built_in">combine</span>.annual_inc)+<span class="hljs-number">1</span>],<br>					<span class="hljs-built_in">labels</span>=['low','high'])<br></code></pre></td></tr></table></figure>
+<p>　　cut也可以直接指定划分份数，将数据等距划分。<br>　　例如，将数据等距分为五份：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">pd</span><span class="hljs-selector-class">.cut</span>(<span class="hljs-selector-tag">combine</span><span class="hljs-selector-class">.annual_inc</span>,5)<br></code></pre></td></tr></table></figure><br>　　理论上，数据应被等距分为了五份，每一个区间的长度都相同，但我们计算可以发现，第一个区间的长度为113364，而其他几个区间的长度都为112800。这并不是cut分割错误，只是为了包含最小值或最大值，<strong>cut的左右端会拓展0.1%</strong>。</p>
+<h4 id="qcut"><a href="#qcut" class="headerlink" title="qcut"></a>qcut</h4><p>　　Pandas中与cut相似的另一个函数是qcut，它将按照每个区间中频数相同的原则进行划分,当我们指定划分份数后，就会用相应的分位数进行划分。例如，当我们使用qcut将数据分为两份时，分割点就是中位数，四份时分割点就是四分位数。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">pd</span><span class="hljs-selector-class">.qcut</span>(<span class="hljs-selector-tag">combine</span><span class="hljs-selector-class">.annual_inc</span>,2)<br></code></pre></td></tr></table></figure></p>
+<h3 id="值替换-replace-map"><a href="#值替换-replace-map" class="headerlink" title="值替换(replace,map)"></a>值替换(replace,map)</h3><p>　　认为状态为”Charged Off”,”In Grace Period”, “Late (31-120 days)”的贷款有违约风险，视为不良贷款，将其值标记为1，其他贷款标记为0。<br>　　使用replace进行值替换。<br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-built_in">combine</span>[<span class="hljs-string">'loan_status'</span>].<span class="hljs-built_in">replace</span>(<br>	to_replace=[<span class="hljs-string">'Fully Paid'</span>,<span class="hljs-string">'Current'</span>,<span class="hljs-string">'Charged Off'</span>,<span class="hljs-string">'In Grace Period'</span>,<span class="hljs-string">'Late (31-120 days)'</span>],<br>    <span class="hljs-built_in">value</span>=[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],<br>    inplace=True)<br></code></pre></td></tr></table></figure><br>　　除了将需要替换的值与替换的新值分别用列表输入外，也可以使用字典进行指定。<br><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">test_loan.replace(to_replace=&#123;<span class="hljs-string">'loan_status'</span>:&#123;<span class="hljs-string">'Fully Paid'</span>:<span class="hljs-number">0</span>,<span class="hljs-string">'Charged Off'</span>:<span class="hljs-number">0</span>,<span class="hljs-string">'In Grace Period'</span>:<span class="hljs-number">1</span>&#125;&#125;)<br></code></pre></td></tr></table></figure><br>　　也可以同时指定不同变量的不同值替换为相同新值。<br><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">test_loan.replace(to_replace=&#123;<span class="hljs-string">'loan_status'</span>:<span class="hljs-string">'Fully Paid'</span>,<span class="hljs-string">'grade'</span>:<span class="hljs-string">'A'</span>&#125;,<span class="hljs-keyword">value</span>=<span class="hljs-string">'Good'</span>)<br></code></pre></td></tr></table></figure><br>　　也可以指定正则表达式进行替换，这时需要设定参数regex为True，代表to_replace部分输入的是正则表达式。如查找所有以C开头的字段并替换为Bad。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">test_loan.replace(<span class="hljs-attribute">to_replace</span>=<span class="hljs-string">'C+.*$'</span>, <span class="hljs-attribute">value</span>=<span class="hljs-string">'Bad'</span>, <span class="hljs-attribute">regex</span>=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure></p>
+<h4 id="map"><a href="#map" class="headerlink" title="map"></a>map</h4><p>　　在Pandas中，如果只是针对某一个Series进行数值替代，我们也可以使用map方法。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go">test_loan[<span class="hljs-string">'loan_status'</span>].<span class="hljs-keyword">map</span>(&#123;<span class="hljs-string">'Fully Paid'</span>:<span class="hljs-number">0</span>,<span class="hljs-string">'Charged Off'</span>:<span class="hljs-number">0</span>,<span class="hljs-string">'In Grace Period'</span>:<span class="hljs-number">1</span>&#125;)<br></code></pre></td></tr></table></figure><br>　　这同样实现了将贷款状态进行替换的效果，但map不能像replace一样直接对DataFrame进行操作。不过map不仅仅可以像上面一样输入字典作为参数，也可以直接输入一个函数进行映射。<br>　　例如，将数据中利率低于12%的映射为’Low’，高于12%的映射为’High’。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">f</span><span class="hljs-params">(x)</span>:</span><br>    <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">12</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">'Low'</span><br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">'High'</span><br>        <br>combine[<span class="hljs-string">'int_rate'</span>].map(f)<br></code></pre></td></tr></table></figure></p>
+<h3 id="哑变量处理-get-dummies"><a href="#哑变量处理-get-dummies" class="headerlink" title="哑变量处理(get_dummies)"></a>哑变量处理(get_dummies)</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cat_vars=[<span class="hljs-string">'term'</span>,<span class="hljs-string">'grade'</span>,<span class="hljs-string">'emp_length'</span>,<span class="hljs-string">'annual_inc'</span>,<span class="hljs-string">'home_ownership'</span>,<span class="hljs-string">'verification_status'</span>]<br><span class="hljs-keyword">for</span> var <span class="hljs-keyword">in</span> cat_vars:<br>    cat_list = pd.get_dummies(combine[var], <span class="hljs-attribute">prefix</span>=var, <span class="hljs-attribute">drop_first</span>=<span class="hljs-literal">True</span>)<br>    <span class="hljs-attribute">combine</span>=combine.join(cat_list)<br></code></pre></td></tr></table></figure>
+<p>　　get_dummies函数中使用了两个参数。prefix可以为新生成的哑变量添加前缀，这方便我们识别新生成的变量是从原来哪一个变量中得来的。drop_first设置为True将删去所获得哑变量的第一个，这是因为在建模中，有k类的分类变量只需要k-1个变量就可以将其描述，如果使用k个变量则会出现完全共线性的问题。<br>　　此外，在这里选择了使用join而不是merge，这是因为get_dummies返回的结果与原始数据有相同的索引，使用join直接基于索引进行连接更简洁。<br><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">pd.get<span class="hljs-constructor">_dummies(<span class="hljs-params">combine</span>['<span class="hljs-params">grade</span>'], <span class="hljs-params">prefix</span>='<span class="hljs-params">grade</span>',<span class="hljs-params">drop_first</span>=True)</span><span class="hljs-literal">[:<span class="hljs-number">5</span>]</span><br></code></pre></td></tr></table></figure></p>
+<script type="math/tex; mode=display">
+\begin{array}{c|c|c}
+&grade_B&    grade_C&    grade_D&    grade_E&    grade_F&    grade_G\\
+\hline
+0&    0&    0&    1&    0&    0&    0& \\
+\hline
+1&    0&    1&    0&    0&    0&    0& \\
+\hline
+2&    1&    0&    0&    0&    0&    0& \\ 
+\hline
+3&    0&    0&    0&    0&    0&    0&\\
+\hline
+4&    0&    1&    0&    0&    0&    0&
+ \end{array}</script><p>　　如果使用merge：<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">combine</span>=combine.merge(cat_list,left_index=<span class="hljs-literal">True</span>,right_index=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure></p>
+<h3 id="添加常数项列-concat"><a href="#添加常数项列-concat" class="headerlink" title="添加常数项列(concat)"></a>添加常数项列(concat)</h3><p>　　在回归分析中，我们往往还需要为自变量添加常数项列，值全为1。<br>　　首先创建一个长度为X的行数，值全为1的列表。再将其转化为Series，并命名”const”。<br><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">const = pd.<span class="hljs-constructor">Series([1] <span class="hljs-operator">*</span> <span class="hljs-params">combine</span>.<span class="hljs-params">shape</span>[0],<span class="hljs-params">name</span>=<span class="hljs-string">"const"</span>)</span><br></code></pre></td></tr></table></figure><br>　　重设X索引，使用concat对数据进行合并，并指定方向为列。<br><figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sas"><span class="hljs-meta">X</span>.<span class="hljs-meta">reset</span><span class="hljs-meta">_index(</span><span class="hljs-meta">drop</span>=True,inplace=True)<br><span class="hljs-meta">X</span> = pd.concat([const,<span class="hljs-meta">X</span>],axis=1)<br></code></pre></td></tr></table></figure><br>　　这里之所以要先重新设置X的索引，是因为concat是基于索引进行拼接的。这么看来，对于列的拼接其实直接使用join就可以了，不过目前join只能作为DataFrame的方法，想拼接DataFrame和Series就必须把DataFrame写在前面：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cs">X.<span class="hljs-keyword">join</span>(<span class="hljs-keyword">const</span>)<br></code></pre></td></tr></table></figure><br>　　此外，concat更常用的是进行行的连接。concat参数如下：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">pandas.concat(objs, <span class="hljs-attribute">axis</span>=0, <span class="hljs-attribute">join</span>=<span class="hljs-string">'outer'</span>)<br></code></pre></td></tr></table></figure><br>　　objs: Series,DataFrame等构成的list<br>　　axis: 合并连接的方向，0是行，1是列<br>　　join：连接方式，”inner”或者”outer”  </p>
+<p>　　可以看到，concat的对象必须是一个list。  </p>
+<p>　　创建两个dataframe:df1,df2。<br><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs prolog">df1 = pd.<span class="hljs-symbol">DataFrame</span>([[<span class="hljs-string">'a'</span>,<span class="hljs-string">'a'</span>, <span class="hljs-number">1</span>], [<span class="hljs-string">'b'</span>,<span class="hljs-string">'b'</span>, <span class="hljs-number">2</span>]],columns=[<span class="hljs-string">'letter'</span>,<span class="hljs-string">'letter1'</span>,<span class="hljs-string">'number'</span>])<br></code></pre></td></tr></table></figure></p>
+<script type="math/tex; mode=display">
+\begin{array}{c|c|c|c}
+ & letter & letter1    & number\\
+\hline
+0    & a    & a    & 1\\
+\hline
+1    & b    & b    & 2
+\end{array}</script><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs prolog">df2 = pd.<span class="hljs-symbol">DataFrame</span>([[<span class="hljs-string">'c'</span>,<span class="hljs-string">'c'</span>, <span class="hljs-number">3</span>], [<span class="hljs-string">'d'</span>,<span class="hljs-string">'d'</span>, <span class="hljs-number">4</span>]],columns=[<span class="hljs-string">'letter'</span>,<span class="hljs-string">'letter2'</span>,<span class="hljs-string">'number'</span>])<br></code></pre></td></tr></table></figure>
+<script type="math/tex; mode=display">
+\begin{array}{c|c|c|c}
+& letter & letter1    & number\\
+\hline
+0    & c    & c    & 3\\
+\hline
+1    & d    & d    & 4
+\end{array}</script><p>　　使用inner方式进行连接，只有能够匹配的变量才会保留。<br><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">pd.concat([df1,df2],axis=<span class="hljs-number">0</span>,join=<span class="hljs-string">'inner'</span>)<br></code></pre></td></tr></table></figure></p>
+<script type="math/tex; mode=display">
+\begin{array}{c|c|c}
+ & letter & number \\
+\hline
+0 &    a &    1 \\
+\hline
+1 &    b &    2 \\
+\hline
+0 &    c &    3 \\
+\hline
+1 &    d &    4
+\end{array}</script><p>　　使用outer方式进行连接，所有变量都会保留，不能匹配的部分用缺失值填充。<br><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">pd.concat([df1,df2],axis=<span class="hljs-number">0</span>,join=<span class="hljs-string">'outer'</span>)<br></code></pre></td></tr></table></figure></p>
+<script type="math/tex; mode=display">
+\begin{array}{c|c|c}
+ & letter &    letter1 & letter2 &    number \\
+\hline
+0 &    a&    a&    NaN&    1 \\ 
+\hline
+1&    b&    b&    NaN&    2 \\ 
+\hline
+0&    c&    NaN&    c&    3 \\
+\hline
+1&    d&    NaN&d    4&
+\end{array}</script><p>　　ignore_index参数为Ture将忽略原来的索引，从0开始重建索引。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">pd.concat([df1,df2],<span class="hljs-attribute">ignore_index</span>=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure><br>　　通过key参数可以建立多层索引，方便识别数据来自于哪个数据源。<br><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs prolog">pd.concat([df1,df2],keys=[<span class="hljs-string">'df1'</span>, <span class="hljs-string">'df2'</span>])<br></code></pre></td></tr></table></figure><br><img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/BDA%E5%A4%8D%E4%B9%A0/concat_key.jpg" srcset="/img/loading.gif" lazyload alt></p>
+<h2 id="行星数据分组与聚合"><a href="#行星数据分组与聚合" class="headerlink" title="行星数据分组与聚合"></a>行星数据分组与聚合</h2>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/ckotxwier00054wlx2jmjddz5/">
+                        <span class="hidden-mobile">2021招商银行FinTech精英训练营 数据赛道(Rank53)</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-code"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.2/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/fireworks.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+<!-- firework -->
+<script type="text/javascript" src="/js/fireworks.js"></script>
