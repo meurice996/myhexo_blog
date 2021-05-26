@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      8.6k 字
+      8.7k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      119
+      120
        分钟
     </span>
   
@@ -487,15 +487,15 @@ Solar&太阳能发电量
 \hline
 &1:\ 选择K个点作为初始质心。\\
 &2:\ repeat \\
-&3:\quad 将每个点指派到最近的质心，形成K个簇。\\
-&4:\quad 重新计算每个簇的质心。\\
+&3:\ \quad 将每个点指派到最近的质心，形成K个簇。\\
+&4:\ \quad 重新计算每个簇的质心。\\
 &5:\ until 质心不发生变化。\\
 \hline
 \end{aligned}</script><p>　　相似度使用欧氏距离(Euclidean Distance)度量，给定两个样本$X=(x_1,x_2,…,x_n)$与$Y=(y_1,y_2,…,y_n)$，$X$和$Y$两个向量间的欧氏距离表示为：</p>
 <script type="math/tex; mode=display">
 \begin{aligned} 
 dist_{ed}(X,Y)=\Vert X-Y \Vert ^2=\sqrt[2]{(x_1-y_1)^2+...+(x_n-y_n)^2}
-\end{aligned}</script><h3 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h3><p>　　距离计算函数<em>point_dist</em>。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">point_dist</span><span class="hljs-params">(x,c)</span></span>: <br>    <span class="hljs-keyword">return</span> np.linalg.norm(x-c)<br></code></pre></td></tr></table></figure></p>
+\end{aligned}</script><h3 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h3><p>　　距离计算函数<em>point_dist</em>。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">point_dist</span><span class="hljs-params">(x,c)</span></span>: <br>    <span class="hljs-keyword">return</span> np.linalg.norm(x-c)<br></code></pre></td></tr></table></figure></p>
 <h4 id="iterrows-遍历方式实现"><a href="#iterrows-遍历方式实现" class="headerlink" title="iterrows 遍历方式实现"></a>iterrows 遍历方式实现</h4><figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sas">def k_means(<span class="hljs-meta">X</span>,k):<br>    centers = <span class="hljs-meta">X</span>.sample(k).values #从数据集随机选择 K 个样本作为初始化的类中心，k 行 d 列<br>    X_labels = np.zeros(l<span class="hljs-meta">en(</span><span class="hljs-meta">X</span>)) #样本的类别<br>    <span class="hljs-meta">error</span> = 10e10<br>    <span class="hljs-meta">while</span>(<span class="hljs-meta">error</span> &gt; 1e-6):<br>        for i,<span class="hljs-meta">x</span> <span class="hljs-meta">in</span> <span class="hljs-meta">X</span>.iterrows():#指派样本类标签<br>            X_labels[i] = np.ar<span class="hljs-meta">gmin(</span>[point_dist(<span class="hljs-meta">x</span>,centers[i,:]) for i <span class="hljs-meta">in</span><span class="hljs-meta"> range(</span>k)])<br>        centers_pre = centers<br>        centers = <span class="hljs-meta">X</span>.groupby(X_labels)<span class="hljs-meta">.mean(</span>).values #更新样本均值，即类中心<br>        <span class="hljs-meta">error</span> = np.linalg.norm(centers_pre - centers)#计算<span class="hljs-meta">error</span><br>    <span class="hljs-meta">return</span> X_labels, centers<br></code></pre></td></tr></table></figure>
 <h4 id="apply-遍历方式实现"><a href="#apply-遍历方式实现" class="headerlink" title="apply 遍历方式实现"></a>apply 遍历方式实现</h4><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs maxima">def k_means(X,k):<br>    #初始化 K 个中心，从原始数据中选择样本<br>    centers = X.sample(k).<span class="hljs-built_in">values</span><br>    X_labels = <span class="hljs-built_in">np</span>.zeros(len(X)) #样本的类别<br>    <span class="hljs-built_in">error</span> = <span class="hljs-number">10e10</span><br>    <span class="hljs-keyword">while</span>(<span class="hljs-built_in">error</span> &gt; <span class="hljs-number">1e-6</span>):<br>        X_labels = X.<span class="hljs-built_in">apply</span>(<span class="hljs-built_in">lambda</span> r : <span class="hljs-built_in">np</span>.argmin([point_dist(r,centers[i,:]) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k)]),axis=<span class="hljs-number">1</span>)<br>        centers_pre = centers<br>        centers = X.groupby(X_labels).<span class="hljs-built_in">mean</span>().<span class="hljs-built_in">values</span> #更新样本均值，即类中心<br>        <span class="hljs-built_in">error</span> = <span class="hljs-built_in">np</span>.linalg.norm(centers_pre - centers)#计算<span class="hljs-built_in">error</span><br>    <span class="hljs-built_in">return</span> X_labels, centers<br></code></pre></td></tr></table></figure>
 <h4 id="矩阵运算方式实现"><a href="#矩阵运算方式实现" class="headerlink" title="矩阵运算方式实现"></a>矩阵运算方式实现</h4><p>　　数据集表示成 $n \times d$ 矩阵 $\mathbf{X}$，其中 $n$ 为样本数量，$d$ 为样本的维度。 $k$ 个聚类中心表示成 $k \times d$ 矩阵 $\mathbf{C}$，$\mathbf{C}$ 每一行表示一个聚类中心。样本到 $k$ 个中心的距离表示成 $n \times k$ 矩阵 $\mathbf{D}$。  </p>
@@ -557,12 +557,12 @@ J(\theta)=-\frac{1}{m}\sum_{i=1}^m{[y^{(i)}logh_\theta(x^{(i)})+(1-y^{(i)})log(1
 \hline
 &1:\ 初始化回归系数。\\
 &2:\ repeat \\
-&3:\quad 计算梯度\frac{\partial J(\theta)}{\partial \theta}。\\
-&4:\quad \theta:=\theta+\alpha * \frac{\partial J(\theta)}{\partial \theta}。\\
+&3:\ \quad 计算梯度\frac{\partial J(\theta)}{\partial \theta}。\\
+&4:\ \quad \theta:=\theta+\alpha * \frac{\partial J(\theta)}{\partial \theta}。\\
 &5:\ until 收敛 or max_loop。\\
-&6: return \theta
+&6:\ return \theta \\
 \hline
-\end{aligned}</script>
+\end{aligned}</script><h3 id="Python实现-1"><a href="#Python实现-1" class="headerlink" title="Python实现"></a>Python实现</h3><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs maxima">def logistic_regression(X,y,learning_rate,max_iter=<span class="hljs-number">1000</span>):<br>    w = <span class="hljs-built_in">np</span>.zeros(X.shape[<span class="hljs-number">1</span>])<br>    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(max_iter):      <br>        yx = y.<span class="hljs-built_in">values</span>.reshape((len(y),<span class="hljs-number">1</span>)) * X <br>        # 计算<span class="hljs-number">1</span> + e^(yXW)<br>        logywx = (<span class="hljs-number">1</span> +  <span class="hljs-built_in">np</span>.power(<span class="hljs-built_in">np</span>.e,X.dot(w)*y)).<span class="hljs-built_in">values</span>.reshape(len(y),<span class="hljs-number">1</span>) <br>        w_grad = <span class="hljs-built_in">np</span>.<span class="hljs-built_in">divide</span>(yx,logywx).<span class="hljs-built_in">sum</span>()<br>        # 迭代w<br>        w = w + learning_rate * w_grad    <br>    <span class="hljs-built_in">return</span> w<br></code></pre></td></tr></table></figure>
             </div>
             <hr>
             <div>
