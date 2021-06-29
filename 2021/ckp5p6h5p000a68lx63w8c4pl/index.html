@@ -14,11 +14,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
+  <meta name="description" content="Meta Learning，又称为 learning to learn，在 meta training 阶段将数据集分解为不同的 meta task，去学习类别变化的情况下模型的泛化能力，在 meta testing 阶段，面对全新的类别，不需要变动已有的模型，就可以完成分类。">
   <meta name="author" content="meurice">
   <meta name="keywords" content="">
   
-  <title>[学习笔记]Meta Learning(元学习) - meurice&#39;s Notes</title>
+  <title>Meta Learning(元学习) - meurice&#39;s Notes</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -164,7 +164,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="[学习笔记]Meta Learning(元学习)">
+            <span class="h2" id="subtitle" title="Meta Learning(元学习)">
               
             </span>
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      654 字
+      726 字
     </span>
   
 
@@ -235,10 +235,11 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">[学习笔记]Meta Learning(元学习)</h1>
+            <h1 style="display: none">Meta Learning(元学习)</h1>
             
             <div class="markdown-body">
-              <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>　　Meta Learning = Learn to learn<br>　　Meta：How to learn a new model</p>
+              <p>Meta Learning，又称为 learning to learn，在 meta training 阶段将数据集分解为不同的 meta task，去学习类别变化的情况下模型的泛化能力，在 meta testing 阶段，面对全新的类别，不需要变动已有的模型，就可以完成分类。<br><a id="more"></a></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>　　Meta Learning = Learn to learn<br>　　Meta：How to learn a new model</p>
 <h2 id="Meta-Learning"><a href="#Meta-Learning" class="headerlink" title="Meta Learning"></a>Meta Learning</h2><p>　　Meta Learning即“学会学习”，学习了一些task后，机器学会如何去学习新的task，例如机器学习了task1——语音辨识，task2——图像辨识，…，然后给一个新的task（例如文本分类），面对这个新的task，机器能够快速的学习。<br><img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/0.png" srcset="/img/loading.gif" lazyload alt><br>　　其步骤和Machine Learning类似，其中不同的是Maching Learning需要找到一个Function <strong>f</strong>，而Meta Learning需要找到的是一个Learning algorithm <strong>F</strong>：<br>　　step1. define a set of learning algorithm<br>　　step2. goodness of learning algorithm<br>　　step3. pick the best learnDing algorithm<br><img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/1.png" srcset="/img/loading.gif" lazyload alt></p>
 <h3 id="step1-Define-a-set-of-learning-algorithm"><a href="#step1-Define-a-set-of-learning-algorithm" class="headerlink" title="step1. Define a set of learning algorithm"></a>step1. Define a set of learning algorithm</h3><p>　　首先准备训练资料，其为一堆训练数据D和一堆f的集合，对于每一个task来说，整个流程构成的不再是像Machine Learning中的参数θ，而是构成了一个f，即每当使用新的参数进行初始化时，我们定义了一个新的f。<br><img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/2.png" srcset="/img/loading.gif" lazyload alt></p>
 <h3 id="step2-Define-the-goodness-of-a-Function-F"><a href="#step2-Define-the-goodness-of-a-Function-F" class="headerlink" title="step2. Define the goodness of a Function F"></a>step2. Define the goodness of a Function F</h3><p>　　对于每一个task，都能得到f，并且有损失l。<br><img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/3.png" srcset="/img/loading.gif" lazyload alt><br>　　N：N tasks<br>　　l^n：Testing loss for task n after training<br><img src="https://hexo-img-meurice.oss-cn-beijing.aliyuncs.com/meta_learning/4.png" srcset="/img/loading.gif" lazyload alt></p>
@@ -270,7 +271,7 @@
                     
                       <a href="/2021/ckp5p6h5u000d68lxaiske2xn/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">[赛后总结]山东省第二届数据应用创新创业大赛-主赛场——疫情密切接触人员追踪(Rank16)</span>
+                        <span class="hidden-mobile">山东省第二届数据应用创新创业大赛-主赛场——疫情密切接触人员追踪</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -279,7 +280,7 @@
                     
                     
                       <a href="/2020/ckp5p6h5r000b68lx2zmlhmw5/">
-                        <span class="hidden-mobile">中移集成（雄安产业研究院）首届OneCity编程大赛(Rank20+)</span>
+                        <span class="hidden-mobile">中移集成（雄安产业研究院）首届OneCity编程大赛</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -296,6 +297,29 @@
                   
                 
                 
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#valine",
+          app_id: "dtJydsInmyysWbG5N0hX7ABy-gzGzoHsz",
+          app_key: "PdHWfqXcrd25C6NYT0uOVqGG",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: true,
+          serverURLs: "https://dtjydsin.lc-cn-n1-shared.com",
+        });
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
 
               </article>
             

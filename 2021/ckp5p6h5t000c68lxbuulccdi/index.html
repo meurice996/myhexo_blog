@@ -14,7 +14,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="本文章就『Lending Club贷款数据转换与融合』、『行星数据分组与聚合』以及『德国能源数据时间序列分析』等案例对Pandas中的部分分析方法以及机器学习中部分算法进行总结。">
+  <meta name="description" content="本文就『Lending Club贷款数据转换与融合』、『行星数据分组与聚合』以及『德国能源数据时间序列分析』等案例对Pandas中的部分分析方法以及机器学习中部分算法进行总结。">
   <meta name="author" content="meurice">
   <meta name="keywords" content="">
   
@@ -238,7 +238,7 @@
             <h1 style="display: none">大数据处理技术复习要点总结[Pandas]</h1>
             
             <div class="markdown-body">
-              <p>本文章就『Lending Club贷款数据转换与融合』、『行星数据分组与聚合』以及『德国能源数据时间序列分析』等案例对Pandas中的部分分析方法以及机器学习中部分算法进行总结。<br><a id="more"></a></p>
+              <p>本文就『Lending Club贷款数据转换与融合』、『行星数据分组与聚合』以及『德国能源数据时间序列分析』等案例对Pandas中的部分分析方法以及机器学习中部分算法进行总结。<br><a id="more"></a></p>
 <h2 id="Lending-Club贷款数据转换与融合"><a href="#Lending-Club贷款数据转换与融合" class="headerlink" title="Lending Club贷款数据转换与融合"></a>Lending Club贷款数据转换与融合</h2><p> 　　该案例完整Jupyter Notebook可参考<a href="http://cookdata.cn/note/view_static_note/5acc2adb881ca8e68cfbb1cd1347d28d/" target="_blank" rel="noopener">Lending Club贷款数据转换与融合</a>。</p>
 <h3 id="数据源"><a href="#数据源" class="headerlink" title="数据源"></a>数据源</h3><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">user</span> = pd.read_csv(<span class="hljs-string">"./input/user.csv"</span>)<br><span class="hljs-attr">loan</span> = pd.read_csv(<span class="hljs-string">"./input/loan.csv"</span>)<br><span class="hljs-attr">history</span> = pd.read_csv(<span class="hljs-string">"./input/history.csv"</span>)<br></code></pre></td></tr></table></figure>
 <h3 id="随机采样-sample"><a href="#随机采样-sample" class="headerlink" title="随机采样(sample)"></a>随机采样(sample)</h3><p>　　随机查看贷款交易数据中的5行。 </p>
@@ -584,9 +584,9 @@ J(\theta)=-\frac{1}{m}\sum_{i=1}^m{[y^{(i)}logh_\theta(x^{(i)})+(1-y^{(i)})log(1
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/ckp9xa56p0000iolx50eq5ka4/">
+                      <a href="/2021/ckqi2onnt0000w0lxdtlmfgkk/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">软件工程导论复习要点总结</span>
+                        <span class="hidden-mobile">2021中国高校计算机大赛——微信大数据挑战赛</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -612,6 +612,29 @@ J(\theta)=-\frac{1}{m}\sum_{i=1}^m{[y^{(i)}logh_\theta(x^{(i)})+(1-y^{(i)})log(1
                   
                 
                 
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#valine",
+          app_id: "dtJydsInmyysWbG5N0hX7ABy-gzGzoHsz",
+          app_key: "PdHWfqXcrd25C6NYT0uOVqGG",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: true,
+          serverURLs: "https://dtjydsin.lc-cn-n1-shared.com",
+        });
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
 
               </article>
             

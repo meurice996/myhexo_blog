@@ -14,7 +14,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
+  <meta name="description" content="Hexo 是一个快速、简洁且高效的博客框架，且支持 Markdown 语法。">
   <meta name="author" content="meurice">
   <meta name="keywords" content="">
   
@@ -238,8 +238,7 @@
             <h1 style="display: none">Hexo+Nginx搭建静态页面博客</h1>
             
             <div class="markdown-body">
-              <p>Hexo 是一个快速、简洁且高效的博客框架，且支持 Markdown 语法。</p>
-<p>• 本地环境配置：Node.js+Git+Hexo <br><br>• ECS环境配置：(CentOs 8) Node.js+Git+Pm2+Nginx <br><br>• 安全组配置：阿里云ECS <br><br>• 域名：腾讯云域名解析 <br><br>• Webhook：Github</p>
+              <p>Hexo 是一个快速、简洁且高效的博客框架，且支持 Markdown 语法。<br><a id="more"></a><br>• 本地环境配置：Node.js+Git+Hexo <br><br>• ECS环境配置：(CentOs 8) Node.js+Git+Pm2+Nginx <br><br>• 安全组配置：阿里云ECS <br><br>• 域名：腾讯云域名解析 <br><br>• Webhook：Github</p>
 <h3 id="本地环境配置"><a href="#本地环境配置" class="headerlink" title="本地环境配置 "></a>本地环境配置 <br></h3><h4 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js "></a>Node.js <br></h4><p>　Node.js官网<a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a>，安装目录尽量不要包括空格，命令行下<code>node -v</code>验证是否安装成功。<br><br>　或通过<a href="https://npm.taobao.org/mirrors/node" target="_blank" rel="noopener">淘宝npm镜像</a>安装。</p>
 <h4 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git<br></h4><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><p>　Git官网 <a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a>，命令行<code>git --version</code>验证。</p>
 <h5 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h5><p>　　配置Github用户名 <br><br>  <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">git<span class="hljs-built_in"> config </span>--global user.name <span class="hljs-string">"example"</span><br>git<span class="hljs-built_in"> config </span>--global user.email <span class="hljs-string">"example@email.com"</span><br></code></pre></td></tr></table></figure><br>　　生成秘钥<br>  <figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">ssh</span>-keygen -t rsa -<span class="hljs-keyword">b </span><span class="hljs-number">4096</span> -C <span class="hljs-string">"example@email.com"</span><br></code></pre></td></tr></table></figure></p>
@@ -308,6 +307,29 @@
                   
                 
                 
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#valine",
+          app_id: "dtJydsInmyysWbG5N0hX7ABy-gzGzoHsz",
+          app_key: "PdHWfqXcrd25C6NYT0uOVqGG",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: true,
+          serverURLs: "https://dtjydsin.lc-cn-n1-shared.com",
+        });
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
 
               </article>
             

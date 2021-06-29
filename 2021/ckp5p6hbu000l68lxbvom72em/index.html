@@ -14,11 +14,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
+  <meta name="description" content="Python + Echarts = pyecharts，记一次经济管理类的案例分析比赛。">
   <meta name="author" content="meurice">
   <meta name="keywords" content="">
   
-  <title>[学习日志]ZBG财经求职力挑战赛[pyecharts数据可视化] - meurice&#39;s Notes</title>
+  <title>ZBG财经求职力挑战赛[pyecharts数据可视化] - meurice&#39;s Notes</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -164,7 +164,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="[学习日志]ZBG财经求职力挑战赛[pyecharts数据可视化]">
+            <span class="h2" id="subtitle" title="ZBG财经求职力挑战赛[pyecharts数据可视化]">
               
             </span>
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      195
+      196
        分钟
     </span>
   
@@ -235,10 +235,11 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">[学习日志]ZBG财经求职力挑战赛[pyecharts数据可视化]</h1>
+            <h1 style="display: none">ZBG财经求职力挑战赛[pyecharts数据可视化]</h1>
             
             <div class="markdown-body">
-              <h2 id="赛题任务"><a href="#赛题任务" class="headerlink" title="赛题任务"></a>赛题任务</h2><p>　　<strong>题目1：</strong><br>　　分析小米公司手机业务目前所处的宏观经营环境以及产业环境。<br>　　<strong>题目2：</strong><br>　　为小米公司制定未来三年手机业务发展策略，帮助小米公司：<br>　　　－　维持在低端手机市场的占有率<br>　　　－　突破高端市场，实现更高的高端手机出货量</p>
+              <p>Python + Echarts = pyecharts，记一次经济管理类的案例分析比赛。<br><a id="more"></a></p>
+<h2 id="赛题任务"><a href="#赛题任务" class="headerlink" title="赛题任务"></a>赛题任务</h2><p>　　<strong>题目1：</strong><br>　　分析小米公司手机业务目前所处的宏观经营环境以及产业环境。<br>　　<strong>题目2：</strong><br>　　为小米公司制定未来三年手机业务发展策略，帮助小米公司：<br>　　　－　维持在低端手机市场的占有率<br>　　　－　突破高端市场，实现更高的高端手机出货量</p>
 <h2 id="pyecharts自适应显示"><a href="#pyecharts自适应显示" class="headerlink" title="pyecharts自适应显示"></a>pyecharts自适应显示</h2><p>　　 <strong>-</strong> 1. 获取浏览器窗口长宽<br>　　 <strong>-</strong> 2. 设置显示区域长款百分比<br>　　 <strong>-</strong> 3. 设置居中参数<br>　　 <strong>-</strong> 4. 设置自适应（根据显示区域调整刷新）  </p>
 <p>　　<strong>step1.</strong> 修改.\Lib\site-packages\pyecharts\render\templates\ <strong>macro</strong><br><figure class="highlight twig"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs twig"><span class="hljs-template-tag">&#123;%- <span class="hljs-name"><span class="hljs-keyword">macro</span></span> render_chart_content(c) -%&#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"chart-container"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"width:95%; height:95%; margin:auto; top:30px"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span></span><br><span class="xml">        var chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml"> = echarts.init(</span><br><span class="xml">            document.getElementById('</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">'), '</span><span class="hljs-template-variable">&#123;&#123; c.theme &#125;&#125;</span><span class="xml">', &#123;renderer: '</span><span class="hljs-template-variable">&#123;&#123; c.renderer &#125;&#125;</span><span class="xml">'&#125;);</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">for</span></span> js in c.js_functions.items %&#125;</span><br><span class="xml">            </span><span class="hljs-template-variable">&#123;&#123; js &#125;&#125;</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endfor</span></span> %&#125;</span><br><span class="xml">        var option_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml"> = </span><span class="hljs-template-variable">&#123;&#123; c.json_contents &#125;&#125;</span><span class="xml">;</span><br><span class="xml">        chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">.setOption(option_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">);</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">if</span></span> c._is_geo_chart %&#125;</span><br><span class="xml">            var bmap = chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">.getModel().getComponent('bmap').getBMap();</span><br><span class="xml">            </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">if</span></span> c.bmap_js_functions %&#125;</span><br><span class="xml">                </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">for</span></span> fn in c.bmap_js_functions.items %&#125;</span><br><span class="xml">                    </span><span class="hljs-template-variable">&#123;&#123; fn &#125;&#125;</span><br><span class="xml">                </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endfor</span></span> %&#125;</span><br><span class="xml">            </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endif</span></span> %&#125;</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endif</span></span> %&#125;</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">if</span></span> c.width.endswith('%') %&#125;</span><br><span class="xml">            window.addEventListener('resize', function()&#123;</span><br><span class="xml">                chart_</span><span class="hljs-template-variable">&#123;&#123; c.chart_id &#125;&#125;</span><span class="xml">.resize();</span><br><span class="xml">            &#125;)</span><br><span class="xml">        </span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-keyword">endif</span></span> %&#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>   </span><br><span class="xml">    var x=window.innerWidth;</span><br><span class="xml">    function resizeFresh()&#123;</span><br><span class="xml">        if(x!=window.innerWidth)</span><br><span class="xml">            location.reload();</span><br><span class="xml">    &#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="hljs-template-tag">&#123;%- <span class="hljs-name"><span class="hljs-keyword">endmacro</span></span> %&#125;</span><br></code></pre></td></tr></table></figure><br>　　<strong>step2.</strong> 修改.\Lib\site-packages\pyecharts\render\templates\ <strong>simple_chart.html</strong><br><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs django"><span class="hljs-template-tag">&#123;% <span class="hljs-name">import</span> 'macro' <span class="hljs-keyword">as</span> macro %&#125;</span><br><span class="xml"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span></span><span class="hljs-template-variable">&#123;&#123; chart.page_title &#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=yes"</span>&gt;</span></span><br><span class="xml">    </span><span class="hljs-template-variable">&#123;&#123; macro.render_chart_dependencies(chart) &#125;&#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/css"</span>&gt;</span></span><br><span class="xml">        html,body&#123;</span><br><span class="xml">            height:100%;</span><br><span class="xml">            width:100%</span><br><span class="xml">    &#125;</span><br><span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">onresize</span>=<span class="hljs-string">"resizeFresh()"</span>&gt;</span></span><br><span class="xml">    </span><span class="hljs-template-variable">&#123;&#123; macro.render_chart_content(chart) &#125;&#125;</span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></code></pre></td></tr></table></figure></p>
 <h2 id="可视化分析-pyecharts"><a href="#可视化分析-pyecharts" class="headerlink" title="可视化分析[pyecharts]"></a>可视化分析[pyecharts]</h2><p>　　pyecharts相关配置：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Python">!jupyter trust Visualization.ipynb<br><br><span class="hljs-keyword">import</span> warnings<br>warnings.filterwarnings(<span class="hljs-string">'ignore'</span>)<br><br><span class="hljs-keyword">from</span> pyecharts.globals <span class="hljs-keyword">import</span> CurrentConfig, NotebookType, OnlineHostType<br><span class="hljs-comment">#http://127.0.0.1:8000/assets/</span><br><br>CurrentConfig.ONLINE_HOST = <span class="hljs-string">'https://assets.pyecharts.org/assets/'</span><br>CurrentConfig.NOTEBOOK_TYPE = NotebookType.JUPYTER_LAB<br><br>CurrentConfig.ONLINE_HOST<br></code></pre></td></tr></table></figure></p>
@@ -6966,7 +6967,7 @@
                     
                     
                       <a href="/2021/ckp5p6h5u000d68lxaiske2xn/">
-                        <span class="hidden-mobile">[赛后总结]山东省第二届数据应用创新创业大赛-主赛场——疫情密切接触人员追踪(Rank16)</span>
+                        <span class="hidden-mobile">山东省第二届数据应用创新创业大赛-主赛场——疫情密切接触人员追踪</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -6983,6 +6984,29 @@
                   
                 
                 
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#valine",
+          app_id: "dtJydsInmyysWbG5N0hX7ABy-gzGzoHsz",
+          app_key: "PdHWfqXcrd25C6NYT0uOVqGG",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: true,
+          serverURLs: "https://dtjydsin.lc-cn-n1-shared.com",
+        });
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
 
               </article>
             
